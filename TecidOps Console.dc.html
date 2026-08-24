@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink-0:#000000; --ink-1:#08090A; --ink-2:#0F1011; --ink-3:#16181A; --ink-4:#1D1F22;
+    --gray-1:#2A2D31; --gray-2:#3A3E43; --gray-3:#56595F; --gray-4:#7A7E84; --gray-5:#9CA0A6; --gray-6:#C2C5CA;
+    --paper-0:#FFFFFF; --paper-1:#FAFAFA;
+    --signal-live:#E5FF4B;
+    --c-amber:#FFB020; --c-amber-soft:#FFC969; --c-mint:#34E0A1; --c-rose:#FF5C7A; --c-violet:#A98BFF;
+    --fg:var(--paper-0); --fg-secondary:var(--gray-5); --fg-tertiary:var(--gray-4); --fg-muted:var(--gray-3);
+    --border-subtle:rgba(255,255,255,0.06); --border-default:rgba(255,255,255,0.10); --border-strong:rgba(255,255,255,0.18);
+    --font-sans:'Geist',ui-sans-serif,system-ui,sans-serif;
+    --font-mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  }
+  html,body{margin:0;background:#e9edf1;}
+  *{box-sizing:border-box;}
+  ::selection{background:rgba(255,176,32,0.32);}
+  a{color:var(--paper-0);text-decoration:none;}
+  a:hover{opacity:0.7;}
+  input::placeholder{color:var(--gray-4);}
+  input{outline:none;background:transparent;border:none;color:var(--paper-0);font-family:var(--font-sans);}
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.18);border-radius:8px;}
+</style>
+</helmet>
+
+<div style="min-height:100vh;width:100%;background:#e9edf1;padding:44px 24px;font-family:var(--font-sans);overflow-x:auto;">
+<div style="width:1360px;min-width:1360px;margin:0 auto;box-shadow:0 50px 100px rgba(15,25,35,0.28);border-radius:10px;overflow:hidden;display:flex;background:var(--ink-1);border:1px solid var(--border-default);">
+
+  <div style="width:240px;flex-shrink:0;background:var(--ink-1);border-right:1px solid var(--border-default);padding:20px 12px;display:flex;flex-direction:column;min-height:880px;">
+    <div style="display:flex;align-items:center;gap:10px;padding:6px 8px 20px;">
+      <div style="width:30px;height:30px;background:var(--c-amber);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2A1A00" stroke-width="1.6" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/><path d="M7 3v18M13 3v18M19 3v18" opacity="0.45"/></svg>
+      </div>
+      <span style="font-weight:500;font-size:16px;letter-spacing:-0.03em;color:var(--fg);">tecid<b style="font-weight:800;">Ops</b></span>
+    </div>
+
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;color:var(--fg-tertiary);text-transform:uppercase;padding:0 8px;margin-bottom:8px;">CONSOLE · 10 MÓDULOS</div>
+
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      <div onClick="{{ goDash }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:6px;border:1px solid transparent;color:var(--fg-secondary);cursor:pointer;font-size:13.5px;font-weight:500;{{ navDash }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.2"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="1.2"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.2"/><rect x="13" y="13" width="7.5" height="7.5" rx="1.2"/></svg>
+        <span>Painel</span>
+      </div>
+      <div onClick="{{ goEstoque }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:6px;border:1px solid transparent;color:var(--fg-secondary);cursor:pointer;font-size:13.5px;font-weight:500;{{ navEstoque }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="7" width="18" height="10" rx="1.4"/><path d="M7 7v10M11 7v10M15 7v10"/></svg>
+        <span>Estoque de rolos</span>
+      </div>
+      <div onClick="{{ goPdv }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:6px;border:1px solid transparent;color:var(--fg-secondary);cursor:pointer;font-size:13.5px;font-weight:500;{{ navPdv }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 4h3l2.2 11.2A1.5 1.5 0 0 0 10.7 16.5h8.1"/><circle cx="10.5" cy="20" r="1.2"/><circle cx="18" cy="20" r="1.2"/><path d="M7.6 7h13l-1.6 7H9"/></svg>
+        <span>Balcão · Corte</span>
+      </div>
+      <div onClick="{{ goPedidos }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:6px;border:1px solid transparent;color:var(--fg-secondary);cursor:pointer;font-size:13.5px;font-weight:500;{{ navPedidos }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="3.5" width="14" height="17" rx="1.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></svg>
+        <span>Pedidos</span>
+      </div>
+      <div onClick="{{ goClientes }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:6px;border:1px solid transparent;color:var(--fg-secondary);cursor:pointer;font-size:13.5px;font-weight:500;{{ navClientes }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 20v-1.5c0-2.2 2.2-4 5-4s5 1.8 5 4V20"/><circle cx="9" cy="8" r="3.2"/><path d="M15.5 20v-1.5c0-1.6-.9-3-2.3-3.6"/><circle cx="16.8" cy="8.4" r="2.6"/></svg>
+        <span>Clientes</span>
+      </div>
+      <div onClick="{{ goImport }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:6px;border:1px solid transparent;color:var(--fg-secondary);cursor:pointer;font-size:13.5px;font-weight:500;{{ navImport }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 8.5 12 4l9 4.5v7L12 20l-9-4.5Z"/><path d="M3 8.5 12 13l9-4.5M12 13v7"/></svg>
+        <span>Importação</span>
+      </div>
+      <div onClick="{{ goFin }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:6px;border:1px solid transparent;color:var(--fg-secondary);cursor:pointer;font-size:13.5px;font-weight:500;{{ navFin }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3 10h18M7 14h3"/></svg>
+        <span>Financeiro</span>
+      </div>
+      <div onClick="{{ goFiscal }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:6px;border:1px solid transparent;color:var(--fg-secondary);cursor:pointer;font-size:13.5px;font-weight:500;{{ navFiscal }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 3h8l4 4v14H6Z"/><path d="M14 3v4h4M9 12h6M9 16h4"/></svg>
+        <span>Notas fiscais</span>
+      </div>
+      <div onClick="{{ goRel }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:6px;border:1px solid transparent;color:var(--fg-secondary);cursor:pointer;font-size:13.5px;font-weight:500;{{ navRel }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 20h16"/><path d="M7 20V11M12 20V5M17 20v-6"/></svg>
+        <span>Relatórios</span>
+      </div>
+      <div onClick="{{ goMobile }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:6px;border:1px solid transparent;color:var(--fg-secondary);cursor:pointer;font-size:13.5px;font-weight:500;{{ navMobile }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M10.8 18.6h2.4"/></svg>
+        <span>App do depósito</span>
+      </div>
+    </div>
+
+    <div style="margin-top:auto;padding:14px 10px 4px;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--signal-live);box-shadow:0 0 8px rgba(229,255,75,0.7);"></span>
+        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--fg-tertiary);">SINC · 14:32:08</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:9px;">
+        <div style="width:26px;height:26px;border-radius:4px;border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;color:var(--fg-secondary);">RG</div>
+        <div>
+          <div style="font-size:12px;font-weight:500;color:var(--fg-secondary);">Rogério Lima</div>
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.12em;color:var(--fg-muted);">DONO · BRÁS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex:1;min-width:0;background:var(--ink-2);display:flex;flex-direction:column;">
+
+    <div style="height:54px;flex-shrink:0;border-bottom:1px solid var(--border-default);display:flex;align-items:center;padding:0 22px;gap:18px;background:rgba(8,9,10,0.72);">
+      <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.16em;color:var(--fg-tertiary);text-transform:uppercase;">{{ crumb }}</div>
+      <div style="flex:1;max-width:320px;display:flex;align-items:center;gap:9px;border:1px solid var(--border-default);border-radius:4px;padding:7px 10px;margin-left:auto;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7A7E84" stroke-width="1.5" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4 4"/></svg>
+        <input placeholder="Buscar rolo, artigo, cor ou cliente" style="flex:1;font-size:12.5px;" />
+        <span style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);border:1px solid var(--border-default);border-radius:3px;padding:1px 4px;">⌘K</span>
+      </div>
+      <div onClick="{{ toggleAgente }}" style="display:flex;align-items:center;gap:8px;border:1px solid var(--border-default);border-radius:4px;padding:7px 11px;cursor:pointer;{{ agenteBtnStyle }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M12 3v3M8.5 11v1.5M15.5 11v1.5M9.5 15h5"/></svg>
+        <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;">AGENTE OPS</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;border:1px solid rgba(229,255,75,0.30);background:rgba(229,255,75,0.07);border-radius:999px;padding:5px 11px;">
+        <span style="width:5px;height:5px;border-radius:50%;background:var(--signal-live);"></span>
+        <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:#D8F26A;">LOJA ABERTA</span>
+      </div>
+    </div>
+
+    <div style="flex:1;padding-top:24px;padding-bottom:24px;padding-left:24px;overflow:hidden;position:relative;{{ contentInset }}">
+
+    <sc-if value="{{ agenteAberto }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:0;right:0;bottom:0;width:392px;z-index:20;background:var(--ink-1);border-left:1px solid var(--border-default);display:flex;flex-direction:column;box-shadow:-24px 0 48px rgba(0,0,0,0.45);">
+
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:26px;height:26px;border-radius:5px;border:1px solid rgba(255,176,32,0.42);background:rgba(255,176,32,0.10);display:flex;align-items:center;justify-content:center;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC969" stroke-width="1.5" stroke-linecap="round"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M12 3v3M8.5 11v1.5M15.5 11v1.5M9.5 15h5"/></svg>
+          </div>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;color:var(--fg);">EDOPS · AGENTE</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+              <span style="width:5px;height:5px;border-radius:50%;background:var(--signal-live);"></span>
+              <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-tertiary);">{{ agenteStatus }}</span>
+            </div>
+          </div>
+        </div>
+        <span onClick="{{ toggleAgente }}" style="font-family:var(--font-mono);font-size:13px;color:var(--fg-tertiary);cursor:pointer;padding:2px 4px;">✕</span>
+      </div>
+
+      <div style="flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
+        <sc-for list="{{ mensagens }}" as="m" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:5px;{{ m.wrap }}">
+            <div style="font-family:var(--font-mono);font-size:8.5px;letter-spacing:0.14em;color:var(--fg-muted);">{{ m.autor }} · {{ m.hora }}</div>
+            <div style="border-radius:6px;padding:11px 13px;max-width:300px;{{ m.bubble }}">
+              <div style="font-size:12.5px;line-height:1.5;color:var(--fg);">{{ m.texto }}</div>
+              <sc-if value="{{ m.temLinhas }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:10px;border-top:1px solid var(--border-subtle);padding-top:9px;display:flex;flex-direction:column;gap:7px;">
+                  <sc-for list="{{ m.linhas }}" as="l" hint-placeholder-count="3">
+                    <div style="display:flex;justify-content:space-between;gap:12px;">
+                      <span style="font-family:var(--font-mono);font-size:10px;color:var(--fg-tertiary);">{{ l.k }}</span>
+                      <span style="font-family:var(--font-mono);font-size:10.5px;color:{{ l.cor }}">{{ l.v }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.temWa }}" hint-placeholder-val="{{ false }}">
+                <a href="{{ m.waHref }}" target="_blank" style="margin-top:11px;display:flex;align-items:center;gap:9px;border:1px solid var(--border-default);border-radius:6px;padding:10px 11px;background:var(--ink-4);">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFC969" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.7-4.8A8.5 8.5 0 1 1 21 11.5Z"/><path d="M9 9.6c0 3 2.4 5.4 5.4 5.4.6 0 1-.4 1-1l-1.4-.8-1 .8a5.6 5.6 0 0 1-2-2l.8-1L11 9.6c0-.6-.4-1-1-1s-1 .4-1 1Z"/></svg>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">WHATSAPP · {{ m.waFone }}</div>
+                    <div style="font-size:11.5px;color:var(--fg);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.waPreview }}</div>
+                  </div>
+                  <span style="font-family:var(--font-mono);font-size:11px;color:var(--c-amber-soft);">→</span>
+                </a>
+              </sc-if>
+              <sc-if value="{{ m.temAcao }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:11px;display:flex;gap:7px;">
+                  <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:8px 11px;cursor:pointer;font-weight:600;">{{ m.acao }}</div>
+                  <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;color:var(--fg-secondary);border:1px solid var(--border-strong);border-radius:4px;padding:8px 11px;cursor:pointer;">DESCARTAR</div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ digitando }}" hint-placeholder-val="{{ false }}">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-muted);">◯ CONSULTANDO BASE…</div>
+        </sc-if>
+      </div>
+
+      <div style="border-top:1px solid var(--border-default);padding:13px 18px 16px;">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px;">
+          <sc-for list="{{ atalhos }}" as="a" hint-placeholder-count="4">
+            <div onClick="{{ a.click }}" style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.08em;padding:6px 9px;border-radius:999px;border:1px solid var(--border-default);color:var(--fg-tertiary);cursor:pointer;">{{ a.label }}</div>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;border:1px solid var(--border-strong);border-radius:4px;padding:9px 11px;">
+          <input value="{{ draft }}" onChange="{{ onDraft }}" onKeyDown="{{ onKey }}" placeholder="Pergunte sobre estoque, cliente ou cobrança" style="flex:1;font-size:12.5px;" />
+          <span onClick="{{ enviar }}" style="font-family:var(--font-mono);font-size:12px;color:var(--c-amber-soft);cursor:pointer;">→</span>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:8.5px;letter-spacing:0.12em;color:var(--fg-muted);margin-top:9px;">LÊ ESTOQUE, PEDIDOS, TÍTULOS E LOTES · AÇÕES PEDEM CONFIRMAÇÃO</div>
+      </div>
+    </div>
+    </sc-if>
+
+
+    <sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;">
+        <div>
+          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 01 · FATURAMENTO</div>
+          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">Agosto/2026 · 18 dias úteis corridos</h1>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:var(--fg-secondary);border:1px solid var(--border-strong);border-radius:4px;padding:8px 12px;cursor:pointer;">MÊS</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:var(--fg-tertiary);border:1px solid var(--border-default);border-radius:4px;padding:8px 12px;cursor:pointer;">TRIMESTRE</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px;">
+        <div style="border:1px solid var(--border-default);border-radius:8px;padding:15px 16px;background:var(--ink-3);">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:10px;">FATURAMENTO</div>
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">R$ 486.320</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--c-mint);margin-top:7px;">↗ 12,4% vs jul</div>
+        </div>
+        <div style="border:1px solid var(--border-default);border-radius:8px;padding:15px 16px;background:var(--ink-3);">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:10px;">METROS VENDIDOS</div>
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">38.412 m</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:7px;">11.240 kg equivalentes</div>
+        </div>
+        <div style="border:1px solid var(--border-default);border-radius:8px;padding:15px 16px;background:var(--ink-3);">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:10px;">TICKET MÉDIO</div>
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">R$ 3.842</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:7px;">3,8 artigos por pedido</div>
+        </div>
+        <div style="border:1px solid var(--border-default);border-radius:8px;padding:15px 16px;background:var(--ink-3);">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:10px;">A RECEBER</div>
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">R$ 214.900</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:7px;">28 títulos abertos</div>
+        </div>
+        <div style="border:1px solid rgba(255,92,122,0.30);border-radius:8px;padding:15px 16px;background:rgba(255,92,122,0.06);">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:#FF9AAE;margin-bottom:10px;">EM ATRASO</div>
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">R$ 19.140</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:#FF9AAE;margin-top:7px;">4,2% da carteira</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:12px;margin-bottom:14px;">
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px 18px 14px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px;">
+            <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);">FATURAMENTO POR SEMANA · R$ MIL</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--fg-muted);">META 520k</div>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:14px;height:150px;border-bottom:1px solid var(--border-default);padding-bottom:0;">
+            <sc-for list="{{ semanas }}" as="s" hint-placeholder-count="8">
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px;height:100%;">
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--fg-secondary);">{{ s.v }}</span>
+                <div style="width:100%;background:linear-gradient(180deg,#FFB020,#8A5C0E);border-radius:2px 2px 0 0;height:{{ s.h }}"></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:14px;margin-top:9px;">
+            <sc-for list="{{ semanas }}" as="s" hint-placeholder-count="8">
+              <div style="flex:1;text-align:center;font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);">{{ s.lbl }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:16px;">MIX DO MÊS · 5 ARTIGOS = 82% DA RECEITA</div>
+          <div style="display:flex;flex-direction:column;gap:13px;">
+            <sc-for list="{{ topArtigos }}" as="a" hint-placeholder-count="5">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+                  <span style="font-size:12.5px;font-weight:500;color:var(--fg);">{{ a.nome }}</span>
+                  <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-secondary);">{{ a.valor }}</span>
+                </div>
+                <div style="height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;">
+                  <div style="height:100%;background:var(--c-amber);width:{{ a.pct }}"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-top:5px;font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);">
+                  <span>{{ a.metros }}</span>
+                  <span>MARGEM {{ a.margem }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:14px;">MAIORES COMPRADORES</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ topClientes }}" as="c" hint-placeholder-count="4">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <div style="font-size:12.5px;font-weight:500;color:var(--fg);">{{ c.nome }}</div>
+                  <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ c.bairro }} · {{ c.pedidos }}</div>
+                </div>
+                <span style="font-family:var(--font-mono);font-size:12px;color:var(--fg-secondary);">{{ c.valor }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:14px;">PRÓXIMAS CHEGADAS</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ chegadas }}" as="l" hint-placeholder-count="3">
+              <div style="border-left:1px solid var(--border-strong);padding-left:11px;">
+                <div style="display:flex;justify-content:space-between;">
+                  <span style="font-family:var(--font-mono);font-size:11px;color:var(--c-amber-soft);">{{ l.id }}</span>
+                  <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-secondary);">ETA {{ l.eta }}</span>
+                </div>
+                <div style="font-size:12.5px;color:var(--fg);margin-top:4px;">{{ l.artigos }}</div>
+                <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ l.fornecedor }} · {{ l.status }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ mostrarAlertas }}" hint-placeholder-val="{{ true }}">
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:14px;">PENDÊNCIAS DE HOJE</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ alertas }}" as="a" hint-placeholder-count="4">
+              <div style="display:flex;gap:10px;align-items:flex-start;">
+                <span style="width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px;background:{{ a.cor }}"></span>
+                <div>
+                  <div style="font-size:12.5px;color:var(--fg);line-height:1.35;">{{ a.texto }}</div>
+                  <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ a.ref }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isEstoque }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 02 · ESTOQUE</div>
+          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">312 rolos · 24.860 m em dois depósitos</h1>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:var(--fg-tertiary);border:1px solid var(--border-default);border-radius:4px;padding:8px 12px;cursor:pointer;">IMPORTAR LOTE</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:9px 13px;cursor:pointer;font-weight:600;">+ ENTRADA DE ROLO</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;">
+        <sc-for list="{{ filtros }}" as="f" hint-placeholder-count="7">
+          <div onClick="{{ f.click }}" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;padding:7px 11px;border-radius:999px;border:1px solid var(--border-default);color:var(--fg-tertiary);cursor:pointer;{{ f.style }}">{{ f.label }}</div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 316px;gap:12px;">
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);overflow:hidden;">
+          <div style="display:grid;grid-template-columns:82px 1.5fr 90px 66px 74px 96px 84px;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border-default);font-family:var(--font-mono);font-size:9px;letter-spacing:0.13em;color:var(--fg-muted);">
+            <span>ROLO</span><span>ARTIGO · COR</span><span>SALDO</span><span>LARG.</span><span>PESO</span><span>LOCAL</span><span>STATUS</span>
+          </div>
+          <sc-for list="{{ rolos }}" as="r" hint-placeholder-count="10">
+            <div onClick="{{ r.click }}" style="display:grid;grid-template-columns:82px 1.5fr 90px 66px 74px 96px 84px;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border-subtle);cursor:pointer;align-items:center;{{ r.rowStyle }}">
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--c-amber-soft);">{{ r.id }}</span>
+              <div style="min-width:0;">
+                <div style="font-size:12.5px;font-weight:500;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.artigo }}</div>
+                <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ r.cor }} · {{ r.comp }}</div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:12px;color:var(--fg);">{{ r.saldo }}</span>
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-secondary);">{{ r.larg }}</span>
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-secondary);">{{ r.peso }}</span>
+              <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);">{{ r.local }}</span>
+              <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;padding:3px 8px;border-radius:999px;justify-self:start;{{ r.statusStyle }}">{{ r.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;align-self:start;">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:14px;">FICHA DO ROLO · {{ rolo.id }}</div>
+          <div style="font-size:16px;font-weight:600;letter-spacing:-0.02em;color:var(--fg);">{{ rolo.artigo }}</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-secondary);margin-top:5px;">{{ rolo.cor }} · {{ rolo.comp }}</div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-subtle);border:1px solid var(--border-subtle);border-radius:6px;overflow:hidden;margin:16px 0;">
+            <div style="background:var(--ink-4);padding:11px 12px;">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">SALDO</div>
+              <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg);margin-top:5px;">{{ rolo.saldo }}</div>
+            </div>
+            <div style="background:var(--ink-4);padding:11px 12px;">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">PESO</div>
+              <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg);margin-top:5px;">{{ rolo.peso }}</div>
+            </div>
+            <div style="background:var(--ink-4);padding:11px 12px;">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">CUSTO LANDED</div>
+              <div style="font-family:var(--font-mono);font-size:16px;color:var(--fg);margin-top:5px;">{{ rolo.custo }}</div>
+            </div>
+            <div style="background:var(--ink-4);padding:11px 12px;">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">VENDA</div>
+              <div style="font-family:var(--font-mono);font-size:16px;color:var(--c-amber-soft);margin-top:5px;">{{ rolo.venda }}</div>
+            </div>
+          </div>
+
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:11px;">HISTÓRICO DE CORTE</div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <sc-for list="{{ rolo.cortes }}" as="c" hint-placeholder-count="4">
+              <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-subtle);padding-bottom:8px;">
+                <div>
+                  <div style="font-size:12px;color:var(--fg);">{{ c.cliente }}</div>
+                  <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:2px;">{{ c.data }} · {{ c.pedido }}</div>
+                </div>
+                <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--fg-secondary);">{{ c.metros }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="margin-top:16px;display:flex;gap:8px;">
+            <div style="flex:1;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:10px;cursor:pointer;font-weight:600;">CORTAR</div>
+            <div style="flex:1;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--fg-secondary);border:1px solid var(--border-strong);border-radius:4px;padding:10px;cursor:pointer;">AMOSTRA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isPdv }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:16px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 03 · BALCÃO</div>
+        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">Venda de balcão · corte imediato</h1>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 380px;gap:12px;">
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:15px;">
+            <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);">ARTIGOS EM LINHA · TOQUE PARA LANÇAR</div>
+            <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);">UNIDADE PADRÃO · {{ unidadeLabel }}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+            <sc-for list="{{ artigos }}" as="a" hint-placeholder-count="9">
+              <div onClick="{{ a.add }}" style="border:1px solid var(--border-default);border-radius:6px;padding:14px;cursor:pointer;background:var(--ink-4);" style-hover="border-color:rgba(255,176,32,0.45);">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+                  <span style="font-size:13px;font-weight:500;color:var(--fg);line-height:1.25;">{{ a.nome }}</span>
+                  <span style="width:16px;height:16px;border-radius:3px;flex-shrink:0;border:1px solid rgba(255,255,255,0.22);background:{{ a.swatch }}"></span>
+                </div>
+                <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:6px;">{{ a.cor }} · {{ a.comp }}</div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;">
+                  <span style="font-family:var(--font-mono);font-size:13px;color:var(--c-amber-soft);">{{ a.preco }}</span>
+                  <span style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-tertiary);">{{ a.disp }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="margin-top:18px;border-top:1px solid var(--border-subtle);padding-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+            <div style="border:1px solid var(--border-default);border-radius:6px;padding:12px 14px;">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">CLIENTE</div>
+              <div style="font-size:13px;color:var(--fg);margin-top:6px;">Aurora Confecções</div>
+            </div>
+            <div style="border:1px solid var(--border-default);border-radius:6px;padding:12px 14px;">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">VENDEDOR</div>
+              <div style="font-size:13px;color:var(--fg);margin-top:6px;">Wilson · balcão 2</div>
+            </div>
+            <div style="border:1px solid rgba(229,255,75,0.24);background:rgba(229,255,75,0.05);border-radius:6px;padding:12px 14px;">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:#D8F26A;">LIMITE DISPONÍVEL</div>
+              <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg);margin-top:6px;">R$ 22.400 de 40.000</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;display:flex;flex-direction:column;align-self:start;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;">
+            <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);">PEDIDO EM ABERTO</div>
+            <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--c-amber-soft);">{{ cartCount }}</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;min-height:120px;">
+            <sc-for list="{{ cart }}" as="i" hint-placeholder-count="3">
+              <div style="display:flex;gap:11px;align-items:center;border-bottom:1px solid var(--border-subtle);padding-bottom:10px;">
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:12.5px;font-weight:500;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ i.nome }}</div>
+                  <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ i.cor }} · {{ i.qtd }} × {{ i.preco }}</div>
+                </div>
+                <span style="font-family:var(--font-mono);font-size:12px;color:var(--fg-secondary);">{{ i.total }}</span>
+                <span onClick="{{ i.remove }}" style="font-family:var(--font-mono);font-size:12px;color:var(--fg-muted);cursor:pointer;padding:0 2px;">✕</span>
+              </div>
+            </sc-for>
+            <sc-if value="{{ cartVazio }}" hint-placeholder-val="{{ false }}">
+              <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-muted);border:1px dashed var(--border-default);border-radius:6px;padding:22px;text-align:center;line-height:1.6;">NENHUM ITEM<br />TOQUE UM ARTIGO À ESQUERDA</div>
+            </sc-if>
+          </div>
+
+          <div style="margin-top:16px;border-top:1px solid var(--border-default);padding-top:14px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--fg-tertiary);">
+              <span>METRAGEM</span><span>{{ cartMetros }}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--fg-tertiary);">
+              <span>DESCONTO ATACADO</span><span>{{ cartDesconto }}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:4px;">
+              <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--fg-secondary);">TOTAL</span>
+              <span style="font-family:var(--font-mono);font-size:26px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">{{ cartTotal }}</span>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:9px;">PAGAMENTO</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+              <sc-for list="{{ pagamentos }}" as="p" hint-placeholder-count="4">
+                <div onClick="{{ p.click }}" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-align:center;padding:10px 4px;border-radius:4px;border:1px solid var(--border-default);color:var(--fg-tertiary);cursor:pointer;{{ p.style }}">{{ p.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+            <div style="text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:13px;cursor:pointer;font-weight:600;">FECHAR E EMITIR NF-e</div>
+            <div style="text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--fg-secondary);border:1px solid var(--border-strong);border-radius:4px;padding:11px;cursor:pointer;">SALVAR COMO ORÇAMENTO</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isPedidos }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 04 · PEDIDOS</div>
+          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">126 pedidos no mês · 9 aguardando corte</h1>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:9px 13px;cursor:pointer;font-weight:600;">+ NOVO PEDIDO</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;">
+        <sc-for list="{{ pedidoKpis }}" as="k" hint-placeholder-count="4">
+          <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:14px 16px;">
+            <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);">{{ k.label }}</div>
+            <div style="font-family:var(--font-mono);font-size:20px;color:var(--fg);margin-top:9px;">{{ k.valor }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:90px 1.4fr 78px 84px 108px 130px 108px;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border-default);font-family:var(--font-mono);font-size:9px;letter-spacing:0.13em;color:var(--fg-muted);">
+          <span>PEDIDO</span><span>CLIENTE</span><span>ARTIGOS</span><span>METROS</span><span>VALOR</span><span>PAGAMENTO</span><span>ETAPA</span>
+        </div>
+        <sc-for list="{{ pedidos }}" as="p" hint-placeholder-count="9">
+          <div style="display:grid;grid-template-columns:90px 1.4fr 78px 84px 108px 130px 108px;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border-subtle);align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--c-amber-soft);">{{ p.id }}</span>
+            <div style="min-width:0;">
+              <div style="font-size:12.5px;font-weight:500;color:var(--fg);">{{ p.cliente }}</div>
+              <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ p.data }} · {{ p.vendedor }}</div>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--fg-secondary);">{{ p.artigos }}</span>
+            <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--fg-secondary);">{{ p.metros }}</span>
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--fg);">{{ p.valor }}</span>
+            <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);">{{ p.pagamento }}</span>
+            <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;padding:3px 8px;border-radius:999px;justify-self:start;{{ p.etapaStyle }}">{{ p.etapa }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isClientes }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 05 · CLIENTES</div>
+          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">184 confecções cadastradas · 71 ativas em 90 dias</h1>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:9px 13px;cursor:pointer;font-weight:600;">+ CADASTRAR</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 316px;gap:12px;">
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);overflow:hidden;">
+          <div style="display:grid;grid-template-columns:1.5fr 96px 118px 106px 104px;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border-default);font-family:var(--font-mono);font-size:9px;letter-spacing:0.13em;color:var(--fg-muted);">
+            <span>CONFECÇÃO</span><span>MIX</span><span>LIMITE</span><span>EM ABERTO</span><span>SITUAÇÃO</span>
+          </div>
+          <sc-for list="{{ clientes }}" as="c" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:1.5fr 96px 118px 106px 104px;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border-subtle);align-items:center;">
+              <div style="min-width:0;">
+                <div style="font-size:12.5px;font-weight:500;color:var(--fg);">{{ c.nome }}</div>
+                <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ c.cnpj }} · {{ c.bairro }}</div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-secondary);">{{ c.mix }}</span>
+              <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--fg-secondary);">{{ c.limite }}</span>
+              <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--fg);">{{ c.aberto }}</span>
+              <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;padding:3px 8px;border-radius:999px;justify-self:start;{{ c.sitStyle }}">{{ c.situacao }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;align-self:start;">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:13px;">FICHA · CLI-0142</div>
+          <div style="font-size:17px;font-weight:600;letter-spacing:-0.02em;color:var(--fg);">Aurora Confecções</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-secondary);margin-top:5px;">12.480.331/0001-09 · Brás</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:3px;">Compra desde 03/2021 · 96 pedidos</div>
+
+          <div style="margin:16px 0;padding:13px 14px;border:1px solid rgba(255,176,32,0.28);background:rgba(255,176,32,0.06);border-radius:6px;">
+            <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--c-amber-soft);">MIX HABITUAL · 4 ARTIGOS</div>
+            <div style="font-size:12.5px;color:var(--fg);margin-top:7px;line-height:1.5;">Malha PV 30.1, Suplex, Crepe Amanda, Viscose Lisa</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ fichaLinhas }}" as="l" hint-placeholder-count="5">
+              <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-subtle);padding-bottom:9px;">
+                <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--fg-tertiary);">{{ l.label }}</span>
+                <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--fg);">{{ l.valor }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <a href="{{ waCliente }}" target="_blank" style="margin-top:16px;display:flex;align-items:center;gap:10px;border:1px solid rgba(255,176,32,0.30);background:rgba(255,176,32,0.06);border-radius:6px;padding:11px 13px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFC969" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.7-4.8A8.5 8.5 0 1 1 21 11.5Z"/><path d="M9 9.6c0 3 2.4 5.4 5.4 5.4.6 0 1-.4 1-1l-1.4-.8-1 .8a5.6 5.6 0 0 1-2-2l.8-1L11 9.6c0-.6-.4-1-1-1s-1 .4-1 1Z"/></svg>
+            <div style="flex:1;">
+              <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--c-amber-soft);">FALAR NO WHATSAPP</div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg);margin-top:3px;">+55 11 97412-3388 · Márcia</div>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--c-amber-soft);">→</span>
+          </a>
+
+          <div style="margin-top:9px;display:flex;gap:8px;">
+            <div style="flex:1;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:10px;cursor:pointer;font-weight:600;">NOVO PEDIDO</div>
+            <div style="flex:1;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--fg-secondary);border:1px solid var(--border-strong);border-radius:4px;padding:10px;cursor:pointer;">EXTRATO</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isImport }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:16px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 06 · IMPORTAÇÃO</div>
+        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">5 lotes em curso · US$ 214.600 embarcados</h1>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ lotes }}" as="l" hint-placeholder-count="5">
+            <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:16px 18px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:13px;">
+                <div>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-family:var(--font-mono);font-size:12px;color:var(--c-amber-soft);">{{ l.id }}</span>
+                    <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;padding:3px 8px;border-radius:999px;{{ l.statusStyle }}">{{ l.status }}</span>
+                  </div>
+                  <div style="font-size:13.5px;font-weight:500;color:var(--fg);margin-top:7px;">{{ l.artigos }}</div>
+                  <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:4px;">{{ l.fornecedor }} · {{ l.pais }} · {{ l.container }}</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">CHEGADA</div>
+                  <div style="font-family:var(--font-mono);font-size:15px;color:var(--fg);margin-top:5px;">{{ l.eta }}</div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border-subtle);border:1px solid var(--border-subtle);border-radius:6px;overflow:hidden;">
+                <div style="background:var(--ink-4);padding:10px 12px;">
+                  <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">METRAGEM</div>
+                  <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg);margin-top:4px;">{{ l.metros }}</div>
+                </div>
+                <div style="background:var(--ink-4);padding:10px 12px;">
+                  <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">FOB</div>
+                  <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg);margin-top:4px;">{{ l.fob }}</div>
+                </div>
+                <div style="background:var(--ink-4);padding:10px 12px;">
+                  <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">CÂMBIO</div>
+                  <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg);margin-top:4px;">{{ l.cambio }}</div>
+                </div>
+                <div style="background:var(--ink-4);padding:10px 12px;">
+                  <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">CUSTO/M</div>
+                  <div style="font-family:var(--font-mono);font-size:13px;color:var(--c-amber-soft);margin-top:4px;">{{ l.custo }}</div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;align-self:start;">
+          <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;">
+            <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:14px;">FORNECEDORES</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <sc-for list="{{ fornecedores }}" as="f" hint-placeholder-count="4">
+                <div style="border-bottom:1px solid var(--border-subtle);padding-bottom:11px;">
+                  <div style="display:flex;justify-content:space-between;">
+                    <span style="font-size:12.5px;font-weight:500;color:var(--fg);">{{ f.nome }}</span>
+                    <span style="font-family:var(--font-mono);font-size:10px;color:var(--fg-tertiary);">{{ f.pais }}</span>
+                  </div>
+                  <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:4px;">{{ f.artigos }}</div>
+                  <div style="display:flex;justify-content:space-between;margin-top:6px;font-family:var(--font-mono);font-size:10px;color:var(--fg-secondary);">
+                    <span>LEAD {{ f.lead }}</span>
+                    <span>{{ f.volume }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;">
+            <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:12px;">CÂMBIO MÉDIO DO ESTOQUE</div>
+            <div style="font-family:var(--font-mono);font-size:26px;color:var(--fg);">R$ 5,38</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--fg-muted);margin-top:7px;line-height:1.6;">DÓLAR HOJE R$ 5,51<br />REPOSIÇÃO 2,4% MAIS CARA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isFin }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:16px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 07 · FINANCEIRO</div>
+        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">Contas a receber · R$ 214.900 em 28 títulos</h1>
+      </div>
+
+      <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;margin-bottom:12px;">
+        <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:18px;">IDADE DA CARTEIRA</div>
+        <div style="display:flex;gap:12px;align-items:flex-end;height:120px;">
+          <sc-for list="{{ aging }}" as="a" hint-placeholder-count="5">
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;gap:8px;">
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg);">{{ a.valor }}</span>
+              <div style="width:100%;border-radius:2px 2px 0 0;height:{{ a.h }};background:{{ a.cor }}"></div>
+              <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.1em;color:var(--fg-muted);">{{ a.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:12px;">
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);overflow:hidden;">
+          <div style="display:grid;grid-template-columns:92px 1.3fr 104px 92px 88px 104px 34px;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border-default);font-family:var(--font-mono);font-size:9px;letter-spacing:0.13em;color:var(--fg-muted);">
+            <span>TÍTULO</span><span>CLIENTE</span><span>VALOR</span><span>VENC.</span><span>FORMA</span><span>STATUS</span><span>WA</span>
+          </div>
+          <sc-for list="{{ titulos }}" as="t" hint-placeholder-count="9">
+            <div style="display:grid;grid-template-columns:92px 1.3fr 104px 92px 88px 104px 34px;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border-subtle);align-items:center;">
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--c-amber-soft);">{{ t.id }}</span>
+              <div style="min-width:0;">
+                <div style="font-size:12.5px;font-weight:500;color:var(--fg);">{{ t.cliente }}</div>
+                <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ t.pedido }}</div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:12px;color:var(--fg);">{{ t.valor }}</span>
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-secondary);">{{ t.venc }}</span>
+              <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);">{{ t.forma }}</span>
+              <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;padding:3px 8px;border-radius:999px;justify-self:start;{{ t.statusStyle }}">{{ t.status }}</span>
+              <a href="{{ t.wa }}" target="_blank" title="Cobrar no WhatsApp" style="display:flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid var(--border-default);border-radius:4px;color:{{ t.waCor }}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.7-4.8A8.5 8.5 0 1 1 21 11.5Z"/><path d="M9 9.6c0 3 2.4 5.4 5.4 5.4.6 0 1-.4 1-1l-1.4-.8-1 .8a5.6 5.6 0 0 1-2-2l.8-1L11 9.6c0-.6-.4-1-1-1s-1 .4-1 1Z"/></svg>
+              </a>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;align-self:start;">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:6px;">CADERNETA</div>
+          <div style="font-size:12.5px;color:var(--fg-secondary);line-height:1.5;margin-bottom:14px;">Fiado registrado no balcão, sem boleto. Vira título quando o cliente acerta.</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ caderneta }}" as="c" hint-placeholder-count="5">
+              <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-subtle);padding-bottom:9px;">
+                <div>
+                  <div style="font-size:12px;color:var(--fg);">{{ c.nome }}</div>
+                  <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:2px;">{{ c.dias }}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:9px;">
+                  <span style="font-family:var(--font-mono);font-size:12px;color:{{ c.cor }}">{{ c.valor }}</span>
+                  <a href="{{ c.wa }}" target="_blank" title="Cobrar no WhatsApp" style="display:flex;align-items:center;justify-content:center;width:24px;height:24px;border:1px solid var(--border-default);border-radius:4px;color:var(--fg-tertiary);">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.7-4.8A8.5 8.5 0 1 1 21 11.5Z"/><path d="M9 9.6c0 3 2.4 5.4 5.4 5.4.6 0 1-.4 1-1l-1.4-.8-1 .8a5.6 5.6 0 0 1-2-2l.8-1L11 9.6c0-.6-.4-1-1-1s-1 .4-1 1Z"/></svg>
+                  </a>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:15px;padding-top:13px;border-top:1px solid var(--border-default);display:flex;justify-content:space-between;align-items:baseline;">
+            <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;color:var(--fg-tertiary);">TOTAL FIADO</span>
+            <span style="font-family:var(--font-mono);font-size:18px;color:var(--fg);">R$ 8.420</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isFiscal }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:16px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 08 · FISCAL</div>
+        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">NF-e de agosto · 118 autorizadas, 2 rejeitadas</h1>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;">
+        <sc-for list="{{ fiscalKpis }}" as="k" hint-placeholder-count="4">
+          <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:14px 16px;">
+            <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);">{{ k.label }}</div>
+            <div style="font-family:var(--font-mono);font-size:20px;color:var(--fg);margin-top:9px;">{{ k.valor }}</div>
+            <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:6px;">{{ k.nota }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:96px 1.3fr 96px 118px 92px 132px;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border-default);font-family:var(--font-mono);font-size:9px;letter-spacing:0.13em;color:var(--fg-muted);">
+          <span>NF-e</span><span>DESTINATÁRIO</span><span>CFOP</span><span>VALOR</span><span>ICMS</span><span>SEFAZ</span>
+        </div>
+        <sc-for list="{{ notas }}" as="n" hint-placeholder-count="9">
+          <div style="display:grid;grid-template-columns:96px 1.3fr 96px 118px 92px 132px;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border-subtle);align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--c-amber-soft);">{{ n.numero }}</span>
+            <div style="min-width:0;">
+              <div style="font-size:12.5px;font-weight:500;color:var(--fg);">{{ n.cliente }}</div>
+              <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ n.data }} · {{ n.pedido }}</div>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-secondary);">{{ n.cfop }}</span>
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--fg);">{{ n.valor }}</span>
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-secondary);">{{ n.icms }}</span>
+            <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;padding:3px 8px;border-radius:999px;justify-self:start;{{ n.statusStyle }}">{{ n.status }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isRel }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:16px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 09 · RELATÓRIOS</div>
+        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">Margem por artigo e giro de estoque</h1>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:12px;">
+        <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);overflow:hidden;">
+          <div style="display:grid;grid-template-columns:1.4fr 100px 100px 96px 92px 104px;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border-default);font-family:var(--font-mono);font-size:9px;letter-spacing:0.13em;color:var(--fg-muted);">
+            <span>ARTIGO</span><span>CUSTO/M</span><span>VENDA/M</span><span>MARGEM</span><span>GIRO</span><span>COBERTURA</span>
+          </div>
+          <sc-for list="{{ margens }}" as="m" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:1.4fr 100px 100px 96px 92px 104px;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border-subtle);align-items:center;">
+              <div style="min-width:0;">
+                <div style="font-size:12.5px;font-weight:500;color:var(--fg);">{{ m.artigo }}</div>
+                <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ m.comp }}</div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--fg-secondary);">{{ m.custo }}</span>
+              <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--fg);">{{ m.venda }}</span>
+              <span style="font-family:var(--font-mono);font-size:12px;color:{{ m.cor }}">{{ m.margem }}</span>
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-secondary);">{{ m.giro }}</span>
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-tertiary);">{{ m.cobertura }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;align-self:start;">
+          <sc-for list="{{ relatorios }}" as="r" hint-placeholder-count="6">
+            <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:15px 16px;cursor:pointer;" style-hover="border-color:rgba(255,176,32,0.45);">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:12.5px;font-weight:500;color:var(--fg);">{{ r.nome }}</span>
+                <span style="font-family:var(--font-mono);font-size:12px;color:var(--fg-muted);">→</span>
+              </div>
+              <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:6px;">{{ r.periodo }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:18px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 10 · CAMPO</div>
+        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">App do depósito · conferência e consulta de rolo</h1>
+        <div style="font-size:13px;color:var(--fg-secondary);margin-top:8px;max-width:560px;line-height:1.55;">O estoquista trabalha só com o celular: lê a etiqueta do rolo, confirma metragem e localização. Toda baixa cai no mesmo saldo do balcão.</div>
+      </div>
+
+      <div style="display:flex;gap:24px;align-items:flex-start;">
+        <div style="width:352px;flex-shrink:0;border:1px solid var(--border-strong);border-radius:26px;background:var(--ink-1);padding:10px;box-shadow:0 24px 60px rgba(0,0,0,0.45);">
+          <div style="border-radius:18px;overflow:hidden;background:var(--ink-2);">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px 10px;font-family:var(--font-mono);font-size:10px;color:var(--fg-tertiary);">
+              <span>14:32</span>
+              <span style="display:flex;gap:6px;align-items:center;"><span style="width:5px;height:5px;border-radius:50%;background:var(--signal-live);"></span>ONLINE</span>
+            </div>
+            <div style="padding:0 16px 16px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                <span style="font-weight:600;font-size:16px;letter-spacing:-0.02em;color:var(--fg);">Conferência</span>
+                <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.1em;color:var(--fg-tertiary);border:1px solid var(--border-default);border-radius:999px;padding:4px 9px;">DEP-A</span>
+              </div>
+
+              <div style="border:1px solid rgba(255,176,32,0.35);background:rgba(255,176,32,0.07);border-radius:8px;padding:15px;margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-family:var(--font-mono);font-size:11px;color:var(--c-amber-soft);">R-4412</span>
+                  <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;color:var(--fg-tertiary);">LT-2618</span>
+                </div>
+                <div style="font-size:15px;font-weight:600;color:var(--fg);margin-top:8px;">Malha PV 30.1</div>
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--fg-secondary);margin-top:4px;">Preto · 67% PES 33% VIS · 1,80 m</div>
+                <div style="display:flex;gap:10px;margin-top:14px;">
+                  <div style="flex:1;border:1px solid var(--border-default);border-radius:6px;padding:10px;">
+                    <div style="font-family:var(--font-mono);font-size:8.5px;letter-spacing:0.12em;color:var(--fg-muted);">SISTEMA</div>
+                    <div style="font-family:var(--font-mono);font-size:15px;color:var(--fg);margin-top:4px;">42,5 m</div>
+                  </div>
+                  <div style="flex:1;border:1px solid var(--border-default);border-radius:6px;padding:10px;">
+                    <div style="font-family:var(--font-mono);font-size:8.5px;letter-spacing:0.12em;color:var(--fg-muted);">CONTADO</div>
+                    <div style="font-family:var(--font-mono);font-size:15px;color:var(--c-amber-soft);margin-top:4px;">41,8 m</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+                <sc-for list="{{ mobileFila }}" as="m" hint-placeholder-count="4">
+                  <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border-default);border-radius:6px;padding:12px 13px;">
+                    <div>
+                      <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-secondary);">{{ m.id }}</div>
+                      <div style="font-size:12.5px;color:var(--fg);margin-top:3px;">{{ m.artigo }}</div>
+                    </div>
+                    <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;padding:4px 9px;border-radius:999px;{{ m.style }}">{{ m.status }}</span>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;color:#2A1A00;background:var(--c-amber);border-radius:6px;padding:15px;font-weight:600;">LER ETIQUETA</div>
+              <div style="text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--fg-secondary);border:1px solid var(--border-strong);border-radius:6px;padding:13px;margin-top:8px;">AJUSTAR SALDO</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+          <sc-for list="{{ mobileNotas }}" as="n" hint-placeholder-count="4">
+            <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:16px 18px;">
+              <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--c-amber-soft);">{{ n.tag }}</div>
+              <div style="font-size:14px;font-weight:500;color:var(--fg);margin-top:8px;">{{ n.titulo }}</div>
+              <div style="font-size:12.5px;color:var(--fg-secondary);margin-top:6px;line-height:1.55;">{{ n.texto }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    </div>
+  </div>
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mostrarAlertas&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Painel&quot;},&quot;unidadePadrao&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Metro&quot;,&quot;Quilo&quot;],&quot;default&quot;:&quot;Metro&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Balcão&quot;},&quot;agenteAberto&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Agente OPS&quot;}}">
+const ACT = "background:rgba(255,176,32,0.10);border:1px solid rgba(255,176,32,0.42);color:#FFC969;box-shadow:inset 2px 0 0 #FFB020;";
+const CHIP_ON = "background:rgba(255,176,32,0.12);border:1px solid rgba(255,176,32,0.42);color:#FFC969;";
+const S = {
+  ok: "background:rgba(52,224,161,0.10);border:1px solid rgba(52,224,161,0.32);color:#7CEBC4;",
+  warn: "background:rgba(255,176,32,0.10);border:1px solid rgba(255,176,32,0.34);color:#FFC969;",
+  bad: "background:rgba(255,92,122,0.10);border:1px solid rgba(255,92,122,0.34);color:#FF9AAE;",
+  neutral: "background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);color:#9CA0A6;"
+};
+const WA = (fone, msg) => "https://wa.me/" + fone.replace(/\D/g, "") + "?text=" + encodeURIComponent(msg);
+const FONES = {
+  "Aurora Confecções": "5511974123388",
+  "Malharia Dinâmica": "5511981220417",
+  "Vitrine Kids": "5511993047761",
+  "Atacado Nova Era": "5511987650122",
+  "JS Modas": "5511976338890",
+  "Studio Bianca": "5511995412207",
+  "Rei do Jeans": "5511982004573",
+  "Confecção Litoral": "5511970118842",
+  "Costura da Néia": "5511984772019",
+  "Ateliê Sol": "5511973550164",
+  "Marcos Uniformes": "5511992870431",
+  "Dona Rita": "5511971204488"
+};
+const BRL = (n) => "R$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const ROLOS = [
+  { id: "R-4412", artigo: "Malha PV 30.1", cor: "Preto", comp: "67% PES 33% VIS", saldo: "42,5 m", larg: "1,80", peso: "12,4 kg", local: "DEP-A · P12", status: "INTEIRO", st: "neutral", custo: "R$ 16,80", venda: "R$ 27,90", lote: "LT-2618" },
+  { id: "R-4413", artigo: "Malha PV 30.1", cor: "Off White", comp: "67% PES 33% VIS", saldo: "38,0 m", larg: "1,80", peso: "11,1 kg", local: "DEP-A · P12", status: "INTEIRO", st: "neutral", custo: "R$ 16,80", venda: "R$ 27,90", lote: "LT-2618" },
+  { id: "R-4430", artigo: "Crepe Amanda", cor: "Rosé", comp: "100% PES", saldo: "72,0 m", larg: "1,50", peso: "9,8 kg", local: "DEP-A · P07", status: "INTEIRO", st: "neutral", custo: "R$ 11,40", venda: "R$ 21,50", lote: "LT-2609" },
+  { id: "R-4421", artigo: "Suplex Fitness", cor: "Marinho", comp: "90% PA 10% EL", saldo: "61,2 m", larg: "1,60", peso: "18,6 kg", local: "DEP-B · P02", status: "INTEIRO", st: "neutral", custo: "R$ 23,10", venda: "R$ 38,00", lote: "LT-2612" },
+  { id: "R-4402", artigo: "Tricoline Fio Tinto", cor: "Azul Royal", comp: "100% ALG", saldo: "55,0 m", larg: "1,50", peso: "7,2 kg", local: "DEP-A · P09", status: "RESERVADO", st: "warn", custo: "R$ 14,20", venda: "R$ 26,40", lote: "LT-2601" },
+  { id: "R-4408", artigo: "Sarja com Elastano", cor: "Bege", comp: "97% ALG 3% EL", saldo: "33,7 m", larg: "1,60", peso: "14,9 kg", local: "DEP-B · P05", status: "RESERVADO", st: "warn", custo: "R$ 19,60", venda: "R$ 32,90", lote: "LT-2605" },
+  { id: "R-4390", artigo: "Viscose Lisa", cor: "Vinho", comp: "100% VIS", saldo: "12,8 m", larg: "1,45", peso: "3,1 kg", local: "DEP-A · P04", status: "RETALHO", st: "neutral", custo: "R$ 15,10", venda: "R$ 26,90", lote: "LT-2601" },
+  { id: "R-4377", artigo: "Oxford Liso", cor: "Preto", comp: "100% PES", saldo: "8,4 m", larg: "1,50", peso: "2,4 kg", local: "DEP-A · P02", status: "RETALHO", st: "neutral", custo: "R$ 9,80", venda: "R$ 18,50", lote: "LT-2588" },
+  { id: "R-4356", artigo: "Linho Misto", cor: "Cru", comp: "55% LI 45% VIS", saldo: "4,2 m", larg: "1,40", peso: "1,3 kg", local: "DEP-A · P01", status: "CRÍTICO", st: "bad", custo: "R$ 28,40", venda: "R$ 49,00", lote: "LT-2570" },
+  { id: "R-4433", artigo: "Crepe Amanda", cor: "Preto", comp: "100% PES", saldo: "68,5 m", larg: "1,50", peso: "9,3 kg", local: "DEP-A · P07", status: "INTEIRO", st: "neutral", custo: "R$ 11,40", venda: "R$ 21,50", lote: "LT-2609" }
+];
+
+const CORTES = {
+  "R-4412": [
+    { cliente: "Aurora Confecções", data: "22/08", pedido: "PED-2418", metros: "-120 m" },
+    { cliente: "Malharia Dinâmica", data: "19/08", pedido: "PED-2402", metros: "-85 m" },
+    { cliente: "JS Modas", data: "14/08", pedido: "PED-2377", metros: "-40 m" },
+    { cliente: "Entrada do lote", data: "06/08", pedido: "LT-2618", metros: "+287 m" }
+  ]
+};
+
+const ARTIGOS = [
+  { nome: "Malha PV 30.1", cor: "Preto", comp: "67% PES 33% VIS", preco: "R$ 27,90/m", p: 27.9, disp: "412 m", swatch: "#141414" },
+  { nome: "Malha PV 30.1", cor: "Off White", comp: "67% PES 33% VIS", preco: "R$ 27,90/m", p: 27.9, disp: "268 m", swatch: "#EFEDE6" },
+  { nome: "Crepe Amanda", cor: "Rosé", comp: "100% PES", preco: "R$ 21,50/m", p: 21.5, disp: "504 m", swatch: "#C98A88" },
+  { nome: "Suplex Fitness", cor: "Marinho", comp: "90% PA 10% EL", preco: "R$ 38,00/m", p: 38, disp: "186 m", swatch: "#1E2A44" },
+  { nome: "Tricoline Fio Tinto", cor: "Azul Royal", comp: "100% ALG", preco: "R$ 26,40/m", p: 26.4, disp: "330 m", swatch: "#22459B" },
+  { nome: "Viscose Lisa", cor: "Vinho", comp: "100% VIS", preco: "R$ 26,90/m", p: 26.9, disp: "94 m", swatch: "#6B2130" },
+  { nome: "Sarja com Elastano", cor: "Bege", comp: "97% ALG 3% EL", preco: "R$ 32,90/m", p: 32.9, disp: "212 m", swatch: "#C4AE8E" },
+  { nome: "Oxford Liso", cor: "Preto", comp: "100% PES", preco: "R$ 18,50/m", p: 18.5, disp: "148 m", swatch: "#17181A" },
+  { nome: "Linho Misto", cor: "Cru", comp: "55% LI 45% VIS", preco: "R$ 49,00/m", p: 49, disp: "34 m", swatch: "#D8CDB8" }
+];
+
+const RESPOSTAS = [
+  {
+    k: ["estoque", "saldo", "rolo", "malha", "tem "],
+    texto: "Saldo disponível por artigo, já descontando o que está reservado em pedido:",
+    linhas: [
+      { k: "MALHA PV 30.1 · 4 CORES", v: "680 m", cor: "var(--fg)" },
+      { k: "CREPE AMANDA · 3 CORES", v: "504 m", cor: "var(--fg)" },
+      { k: "SUPLEX FITNESS", v: "186 m", cor: "#FFC969" },
+      { k: "LINHO MISTO CRU", v: "4,2 m", cor: "#FF9AAE" }
+    ],
+    acao: "ABRIR ESTOQUE",
+    wa: { nome: "Aurora Confecções", msg: "Olá Márcia, aqui é da tecidOps no Brás. Temos 680 m de Malha PV 30.1 em quatro cores prontos para retirada e o lote novo chega em 02/09. Quer que eu reserve?" }
+  },
+  {
+    k: ["atras", "cobran", "receber", "devendo", "inadim"],
+    texto: "R$ 19.140 vencidos em 3 clientes. O Rei do Jeans concentra 32% e tem pedido novo travado.",
+    linhas: [
+      { k: "REI DO JEANS · 22D", v: "R$ 6.180", cor: "#FF9AAE" },
+      { k: "CONFECÇÃO LITORAL · 98D", v: "R$ 3.800", cor: "#FF9AAE" },
+      { k: "CADERNETA VENCIDA", v: "R$ 460", cor: "#FFC969" }
+    ],
+    acao: "REGISTRAR CONTATO",
+    wa: { nome: "Rei do Jeans", msg: "Bom dia, aqui é da tecidOps no Brás. O título TIT-1188 de R$ 6.180 venceu em 02/08. Consegue acertar hoje via Pix? Assim já libero o PED-2398 para corte." }
+  },
+  {
+    k: ["pedido", "corte", "cortar", "separa"],
+    texto: "9 pedidos aguardando corte, 1.840 m no total. O gargalo está no depósito B com duas peças de Suplex.",
+    linhas: [
+      { k: "PED-2418 · AURORA", v: "620 m", cor: "var(--fg)" },
+      { k: "PED-2412 · JS MODAS", v: "190 m", cor: "var(--fg)" },
+      { k: "MAIS 7 PEDIDOS", v: "1.030 m", cor: "var(--fg-secondary)" }
+    ],
+    acao: "IMPRIMIR ROMANEIOS",
+    wa: { nome: "Vitrine Kids", msg: "Olá, aqui é da tecidOps no Brás. Seu pedido PED-2415 está cortado e pronto para retirada, 340 m em 5 artigos. Retira hoje ou mando pelo transportador?" }
+  },
+  {
+    k: ["lote", "importa", "chega", "container", "cambio", "câmbio"],
+    texto: "LT-2618 chega em 02/09 com 8.400 m de Malha PV. Custo landed de R$ 16,80/m ao câmbio de 5,42 — 2,4% acima do estoque atual.",
+    linhas: [
+      { k: "LT-2615 · DESEMBARAÇO", v: "27/08", cor: "#FFC969" },
+      { k: "LT-2618 · EM TRÂNSITO", v: "02/09", cor: "var(--fg)" },
+      { k: "LT-2621 · EMBARCADO", v: "14/09", cor: "var(--fg)" }
+    ],
+    acao: "VER IMPORTAÇÃO"
+  },
+  {
+    k: ["cliente", "aurora", "limite", "credito", "crédito"],
+    texto: "Aurora Confecções: R$ 22.800 de compra média por mês, paga em 26 dias, 4 artigos no mix. Limite disponível de R$ 22.400.",
+    linhas: [
+      { k: "EM ABERTO", v: "R$ 17.600", cor: "var(--fg)" },
+      { k: "METROS EM 90D", v: "4.180 m", cor: "var(--fg)" },
+      { k: "SITUAÇÃO", v: "EM DIA", cor: "#7CEBC4" }
+    ],
+    acao: "ABRIR FICHA",
+    wa: { nome: "Aurora Confecções", msg: "Olá Márcia, aqui é da tecidOps. Seu limite disponível é de R$ 22.400 e o próximo vencimento é 19/09. Precisa de tecido essa semana?" }
+  },
+  {
+    k: ["margem", "preco", "preço", "lucro", "giro", "recompra", "comprar"],
+    texto: "Linho Misto trava capital: giro de 0,7× e 184 dias de cobertura com a menor margem da loja. Crepe Amanda é o oposto — repor no próximo lote.",
+    linhas: [
+      { k: "CREPE AMANDA", v: "46% · GIRO 4,2×", cor: "#7CEBC4" },
+      { k: "MALHA PV 30.1", v: "39% · GIRO 5,6×", cor: "var(--fg)" },
+      { k: "LINHO MISTO", v: "31% · GIRO 0,7×", cor: "#FF9AAE" }
+    ],
+    acao: "SUGERIR RECOMPRA",
+    wa: { nome: "Malharia Dinâmica", msg: "Bom dia, aqui é da tecidOps no Brás. Chegou Crepe Amanda em três cores a R$ 21,50/m com pronta entrega. Quer que eu separe uma peça?" }
+  },
+  {
+    k: ["nota", "nf", "fiscal", "sefaz", "icms"],
+    texto: "118 notas autorizadas em agosto. Duas rejeitadas pelo código 610: NCM do Linho Misto está divergente do cadastro.",
+    linhas: [
+      { k: "REJEITADAS", v: "2", cor: "#FF9AAE" },
+      { k: "ICMS APURADO", v: "R$ 41.870", cor: "var(--fg)" }
+    ],
+    acao: "CORRIGIR NCM"
+  }
+];
+
+const FALLBACK = {
+  texto: "Consigo responder sobre estoque de rolos, pedidos em corte, limite e histórico de cliente, títulos em atraso, lotes de importação e margem por artigo. Pergunte como falaria no balcão.",
+  linhas: []
+};
+
+class Component extends DCLogic {
+  state = {
+    screen: "dash",
+    agente: true,
+    draft: "",
+    digitando: false,
+    msgs: [
+      { role: "bot", texto: "Bom dia, Rogério. Fechamento de ontem: R$ 18.240 em 6 pedidos. Duas coisas pedem decisão hoje.", linhas: [{ k: "LINHO MISTO CRU", v: "4,2 m EM ESTOQUE", cor: "#FF9AAE" }, { k: "REI DO JEANS", v: "R$ 6.180 EM ATRASO", cor: "#FF9AAE" }], hora: "08:12:04" },
+      { role: "user", texto: "quanto de malha pv preto ainda tenho pra vender essa semana", hora: "08:13:22" },
+      { role: "bot", texto: "412 m de Malha PV 30.1 preto livres, em dois rolos no DEP-A P12. Sai 5,6× por mês — dá 26 dias de cobertura, e o lote LT-2618 chega em 02/09.", linhas: [{ k: "R-4412 · DEP-A P12", v: "42,5 m", cor: "var(--fg)" }, { k: "OUTROS 8 ROLOS", v: "369,5 m", cor: "var(--fg)" }], acao: "RESERVAR PARA AURORA", wa: { nome: "Aurora Confecções", msg: "Olá Márcia, aqui é da tecidOps. Separei 412 m de Malha PV 30.1 preto a R$ 27,90/m. Reservo no seu nome até amanhã?" }, hora: "08:13:25" }
+    ],
+    rolo: "R-4412",
+    filtro: "TODOS",
+    pgto: "BOLETO 28D",
+    cart: [
+      { nome: "Malha PV 30.1", cor: "Preto", q: 120, p: 27.9 },
+      { nome: "Crepe Amanda", cor: "Rosé", q: 80, p: 21.5 },
+      { nome: "Suplex Fitness", cor: "Marinho", q: 45, p: 38 }
+    ]
+  };
+
+  go(screen) { return () => this.setState({ screen }); }
+  nav(id) { return this.state.screen === id ? ACT : ""; }
+
+  hora() {
+    const d = new Date();
+    return [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, "0")).join(":");
+  }
+
+  perguntar(texto) {
+    const q = (texto || "").trim();
+    if (!q) return;
+    const low = q.toLowerCase();
+    const hit = RESPOSTAS.find((r) => r.k.some((k) => low.indexOf(k) > -1)) || FALLBACK;
+    this.setState((s) => ({
+      draft: "",
+      digitando: true,
+      msgs: s.msgs.concat([{ role: "user", texto: q, hora: this.hora() }])
+    }));
+    clearTimeout(this._t);
+    this._t = setTimeout(() => {
+      this.setState((s) => ({
+        digitando: false,
+        msgs: s.msgs.concat([{ role: "bot", texto: hit.texto, linhas: hit.linhas, acao: hit.acao, wa: hit.wa, hora: this.hora() }])
+      }));
+    }, 700);
+  }
+
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  add(a) {
+    return () => this.setState((s) => {
+      const i = s.cart.findIndex((c) => c.nome === a.nome && c.cor === a.cor);
+      if (i > -1) {
+        const cart = s.cart.slice();
+        cart[i] = Object.assign({}, cart[i], { q: cart[i].q + 20 });
+        return { cart };
+      }
+      return { cart: s.cart.concat([{ nome: a.nome, cor: a.cor, q: 20, p: a.p }]) };
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const cart = s.cart;
+    const metros = cart.reduce((t, i) => t + i.q, 0);
+    const bruto = cart.reduce((t, i) => t + i.q * i.p, 0);
+    const desc = metros >= 200 ? bruto * 0.05 : 0;
+    const crumb = {
+      dash: "PAINEL · AGOSTO 2026", estoque: "ESTOQUE · ROLOS", pdv: "BALCÃO · CORTE",
+      pedidos: "PEDIDOS · MÊS CORRENTE", clientes: "CLIENTES · CONFECÇÕES", import: "IMPORTAÇÃO · LOTES",
+      fin: "FINANCEIRO · A RECEBER", fiscal: "FISCAL · NF-e", rel: "RELATÓRIOS · MARGEM", mobile: "CAMPO · APP DEPÓSITO"
+    }[s.screen];
+
+    const rolo = ROLOS.find((r) => r.id === s.rolo) || ROLOS[0];
+
+    const aberto = s.agente && this.props.agenteAberto !== false;
+
+    return {
+      crumb,
+      mostrarAlertas: this.props.mostrarAlertas !== false,
+
+      agenteAberto: aberto,
+      contentInset: aberto ? "padding-right:416px;" : "padding-right:24px;",
+      agenteBtnStyle: aberto ? "background:rgba(255,176,32,0.10);border:1px solid rgba(255,176,32,0.42);color:#FFC969;" : "color:var(--fg-secondary);",
+      agenteStatus: s.digitando ? "CONSULTANDO" : "PRONTO · BASE 14:32",
+      toggleAgente: () => this.setState({ agente: !s.agente }),
+      digitando: s.digitando,
+      draft: s.draft,
+      onDraft: (e) => this.setState({ draft: e.target.value }),
+      onKey: (e) => { if (e.key === "Enter") this.perguntar(this.state.draft); },
+      enviar: () => this.perguntar(this.state.draft),
+      atalhos: [
+        { label: "SALDO DE MALHA PV", q: "saldo de malha pv" },
+        { label: "QUEM ESTÁ EM ATRASO", q: "quem está em atraso" },
+        { label: "PEDIDOS P/ CORTAR", q: "pedidos para cortar" },
+        { label: "PRÓXIMO LOTE", q: "próximo lote de importação" },
+        { label: "O QUE REPOR", q: "o que repor por margem e giro" }
+      ].map((a) => ({ label: a.label, click: () => this.perguntar(a.q) })),
+      mensagens: s.msgs.map((m) => ({
+        texto: m.texto,
+        hora: m.hora,
+        autor: m.role === "bot" ? "EDOPS · AGENTE" : "VOCÊ",
+        wrap: m.role === "bot" ? "align-items:flex-start;" : "align-items:flex-end;",
+        bubble: m.role === "bot"
+          ? "background:var(--ink-3);border:1px solid var(--border-default);"
+          : "background:rgba(255,176,32,0.09);border:1px solid rgba(255,176,32,0.28);",
+        temLinhas: !!(m.linhas && m.linhas.length),
+        linhas: m.linhas || [],
+        temAcao: !!m.acao,
+        acao: m.acao || "",
+        temWa: !!m.wa,
+        waHref: m.wa ? WA(FONES[m.wa.nome] || "5511900000000", m.wa.msg) : "#",
+        waFone: m.wa ? m.wa.nome.toUpperCase() : "",
+        waPreview: m.wa ? m.wa.msg : ""
+      })),
+      waCliente: WA(FONES["Aurora Confecções"], "Olá Márcia, aqui é da tecidOps no Brás. Passando para saber o que você vai precisar essa semana."),
+
+      unidadeLabel: (this.props.unidadePadrao || "Metro") === "Quilo" ? "QUILO" : "METRO LINEAR",
+
+      isDash: s.screen === "dash", isEstoque: s.screen === "estoque", isPdv: s.screen === "pdv",
+      isPedidos: s.screen === "pedidos", isClientes: s.screen === "clientes", isImport: s.screen === "import",
+      isFin: s.screen === "fin", isFiscal: s.screen === "fiscal", isRel: s.screen === "rel", isMobile: s.screen === "mobile",
+
+      goDash: this.go("dash"), goEstoque: this.go("estoque"), goPdv: this.go("pdv"),
+      goPedidos: this.go("pedidos"), goClientes: this.go("clientes"), goImport: this.go("import"),
+      goFin: this.go("fin"), goFiscal: this.go("fiscal"), goRel: this.go("rel"), goMobile: this.go("mobile"),
+
+      navDash: this.nav("dash"), navEstoque: this.nav("estoque"), navPdv: this.nav("pdv"),
+      navPedidos: this.nav("pedidos"), navClientes: this.nav("clientes"), navImport: this.nav("import"),
+      navFin: this.nav("fin"), navFiscal: this.nav("fiscal"), navRel: this.nav("rel"), navMobile: this.nav("mobile"),
+
+      semanas: [
+        { lbl: "S27", v: "94", h: "78px" }, { lbl: "S28", v: "108", h: "92px" },
+        { lbl: "S29", v: "86", h: "70px" }, { lbl: "S30", v: "119", h: "102px" },
+        { lbl: "S31", v: "132", h: "116px" }, { lbl: "S32", v: "104", h: "88px" },
+        { lbl: "S33", v: "141", h: "126px" }, { lbl: "S34", v: "68", h: "54px" }
+      ],
+      topArtigos: [
+        { nome: "Malha PV 30.1", valor: "R$ 148.900", pct: "100%", metros: "11.420 M", margem: "39%" },
+        { nome: "Crepe Amanda", valor: "R$ 96.200", pct: "65%", metros: "8.910 M", margem: "46%" },
+        { nome: "Suplex Fitness", valor: "R$ 71.400", pct: "48%", metros: "3.180 M", margem: "38%" },
+        { nome: "Tricoline Fio Tinto", valor: "R$ 52.800", pct: "35%", metros: "2.640 M", margem: "44%" },
+        { nome: "Sarja com Elastano", valor: "R$ 29.100", pct: "20%", metros: "1.140 M", margem: "40%" }
+      ],
+      topClientes: [
+        { nome: "Aurora Confecções", bairro: "Brás", pedidos: "9 pedidos", valor: "R$ 68.400" },
+        { nome: "Malharia Dinâmica", bairro: "Pari", pedidos: "7 pedidos", valor: "R$ 51.200" },
+        { nome: "Vitrine Kids", bairro: "Bom Retiro", pedidos: "6 pedidos", valor: "R$ 38.900" },
+        { nome: "Studio Bianca", bairro: "Mooca", pedidos: "4 pedidos", valor: "R$ 24.100" }
+      ],
+      chegadas: [
+        { id: "LT-2618", eta: "02/09", artigos: "Malha PV 30.1 · 4 cores", fornecedor: "Shaoxing Yicheng", status: "EM TRÂNSITO" },
+        { id: "LT-2621", eta: "14/09", artigos: "Suplex Fitness · 3 cores", fornecedor: "Hangzhou Wenhui", status: "EMBARCADO" },
+        { id: "LT-2624", eta: "28/09", artigos: "Viscose Lisa · 5 cores", fornecedor: "Surat Textiles", status: "PRODUÇÃO" }
+      ],
+      alertas: [
+        { cor: "#FF5C7A", texto: "Linho Misto Cru com 4,2 m — abaixo do mínimo de 60 m", ref: "R-4356 · DEP-A P01", },
+        { cor: "#FF5C7A", texto: "Rei do Jeans com R$ 6.180 vencidos há 22 dias", ref: "TIT-1188 · BLOQUEAR CRÉDITO" },
+        { cor: "#FFB020", texto: "LT-2618 chega em 02/09 e não tem endereçamento definido", ref: "1×40HQ · 8.400 m" },
+        { cor: "#FFB020", texto: "9 pedidos aguardando corte no depósito B", ref: "1.840 m pendentes" }
+      ],
+
+      filtros: ["TODOS", "MALHA", "PLANO", "RETALHO ≤ 15M", "RESERVADO", "DEP-A", "DEP-B"].map((f) => ({
+        label: f, style: s.filtro === f ? CHIP_ON : "", click: () => this.setState({ filtro: f })
+      })),
+      rolos: ROLOS.map((r) => Object.assign({}, r, {
+        statusStyle: S[r.st],
+        rowStyle: r.id === s.rolo ? "background:rgba(255,176,32,0.06);box-shadow:inset 2px 0 0 #FFB020;" : "",
+        click: () => this.setState({ rolo: r.id })
+      })),
+      rolo: Object.assign({}, rolo, { cortes: CORTES[rolo.id] || CORTES["R-4412"] }),
+
+      artigos: ARTIGOS.map((a) => Object.assign({}, a, { add: this.add(a) })),
+      cart: cart.map((i, idx) => ({
+        nome: i.nome, cor: i.cor, qtd: i.q + " m", preco: BRL(i.p), total: BRL(i.q * i.p),
+        remove: () => this.setState((st) => ({ cart: st.cart.filter((_, k) => k !== idx) }))
+      })),
+      cartVazio: cart.length === 0,
+      cartCount: cart.length + " ITENS",
+      cartMetros: metros.toLocaleString("pt-BR") + " m",
+      cartDesconto: desc > 0 ? "− " + BRL(desc) : "—",
+      cartTotal: BRL(bruto - desc),
+      pagamentos: ["PIX À VISTA", "BOLETO 28D", "BOLETO 30/60", "CARTÃO 3×"].map((p) => ({
+        label: p, style: s.pgto === p ? CHIP_ON : "", click: () => this.setState({ pgto: p })
+      })),
+
+      pedidoKpis: [
+        { label: "EM ABERTO", valor: "22" }, { label: "AGUARDANDO CORTE", valor: "9" },
+        { label: "PRONTOS P/ RETIRAR", valor: "6" }, { label: "VALOR EM CURSO", valor: "R$ 84.120" }
+      ],
+      pedidos: [
+        { id: "PED-2418", cliente: "Aurora Confecções", data: "22/08", vendedor: "Wilson", artigos: "4", metros: "620 m", valor: "R$ 14.880", pagamento: "BOLETO 28D", etapa: "EM CORTE", st: "warn" },
+        { id: "PED-2417", cliente: "Malharia Dinâmica", data: "22/08", vendedor: "Cida", artigos: "3", metros: "480 m", valor: "R$ 11.240", pagamento: "PIX À VISTA", etapa: "FATURADO", st: "ok" },
+        { id: "PED-2415", cliente: "Vitrine Kids", data: "21/08", vendedor: "Wilson", artigos: "5", metros: "340 m", valor: "R$ 8.960", pagamento: "BOLETO 30/60", etapa: "PRONTO", st: "ok" },
+        { id: "PED-2412", cliente: "JS Modas", data: "21/08", vendedor: "Cida", artigos: "2", metros: "190 m", valor: "R$ 4.180", pagamento: "CADERNETA", etapa: "EM CORTE", st: "warn" },
+        { id: "PED-2409", cliente: "Atacado Nova Era", data: "20/08", vendedor: "Rogério", artigos: "5", metros: "1.240 m", valor: "R$ 31.400", pagamento: "BOLETO 30/60", etapa: "FATURADO", st: "ok" },
+        { id: "PED-2404", cliente: "Studio Bianca", data: "19/08", vendedor: "Wilson", artigos: "3", metros: "260 m", valor: "R$ 6.740", pagamento: "CARTÃO 3×", etapa: "ENTREGUE", st: "neutral" },
+        { id: "PED-2402", cliente: "Malharia Dinâmica", data: "19/08", vendedor: "Cida", artigos: "4", metros: "510 m", valor: "R$ 12.180", pagamento: "BOLETO 28D", etapa: "ENTREGUE", st: "neutral" },
+        { id: "PED-2398", cliente: "Rei do Jeans", data: "18/08", vendedor: "Wilson", artigos: "2", metros: "420 m", valor: "R$ 9.640", pagamento: "BOLETO 28D", etapa: "BLOQUEADO", st: "bad" },
+        { id: "PED-2377", cliente: "JS Modas", data: "14/08", vendedor: "Rogério", artigos: "3", metros: "280 m", valor: "R$ 7.020", pagamento: "PIX À VISTA", etapa: "ENTREGUE", st: "neutral" }
+      ].map((p) => Object.assign({}, p, { etapaStyle: S[p.st] })),
+
+      clientes: [
+        { nome: "Aurora Confecções", cnpj: "12.480.331", bairro: "Brás", mix: "4 artigos", limite: "R$ 40.000", aberto: "R$ 17.600", situacao: "EM DIA", st: "ok" },
+        { nome: "Malharia Dinâmica", cnpj: "08.117.902", bairro: "Pari", mix: "5 artigos", limite: "R$ 35.000", aberto: "R$ 12.180", situacao: "EM DIA", st: "ok" },
+        { nome: "Vitrine Kids", cnpj: "21.905.044", bairro: "Bom Retiro", mix: "5 artigos", limite: "R$ 25.000", aberto: "R$ 8.960", situacao: "EM DIA", st: "ok" },
+        { nome: "Atacado Nova Era", cnpj: "31.226.518", bairro: "Brás", mix: "5 artigos", limite: "R$ 60.000", aberto: "R$ 44.200", situacao: "NO LIMITE", st: "warn" },
+        { nome: "JS Modas", cnpj: "17.640.883", bairro: "Belenzinho", mix: "3 artigos", limite: "R$ 15.000", aberto: "R$ 4.180", situacao: "CADERNETA", st: "warn" },
+        { nome: "Studio Bianca", cnpj: "26.019.774", bairro: "Mooca", mix: "3 artigos", limite: "R$ 18.000", aberto: "R$ 2.240", situacao: "EM DIA", st: "ok" },
+        { nome: "Rei do Jeans", cnpj: "09.884.120", bairro: "Brás", mix: "2 artigos", limite: "R$ 30.000", aberto: "R$ 6.180", situacao: "ATRASO 22D", st: "bad" },
+        { nome: "Confecção Litoral", cnpj: "33.507.611", bairro: "Bom Retiro", mix: "4 artigos", limite: "R$ 22.000", aberto: "—", situacao: "INATIVO 90D", st: "neutral" }
+      ].map((c) => Object.assign({}, c, { sitStyle: S[c.st] })),
+      fichaLinhas: [
+        { label: "COMPRA MÉDIA / MÊS", valor: "R$ 22.800" },
+        { label: "METROS EM 90 DIAS", valor: "4.180 m" },
+        { label: "PRAZO MÉDIO DE PAGAMENTO", valor: "26 dias" },
+        { label: "LIMITE DISPONÍVEL", valor: "R$ 22.400" },
+        { label: "ÚLTIMA COMPRA", valor: "22/08 · PED-2418" }
+      ],
+
+      lotes: [
+        { id: "LT-2618", status: "EM TRÂNSITO", st: "warn", artigos: "Malha PV 30.1 · Preto, Off White, Marinho, Cinza", fornecedor: "Shaoxing Yicheng", pais: "CN", container: "1×40HQ", eta: "02/09", metros: "8.400 m", fob: "US$ 24.100", cambio: "R$ 5,42", custo: "R$ 16,80" },
+        { id: "LT-2621", status: "EMBARCADO", st: "neutral", artigos: "Suplex Fitness · Marinho, Preto, Grafite", fornecedor: "Hangzhou Wenhui", pais: "CN", container: "1×20GP", eta: "14/09", metros: "3.600 m", fob: "US$ 15.800", cambio: "R$ 5,48", custo: "R$ 23,10" },
+        { id: "LT-2624", status: "PRODUÇÃO", st: "neutral", artigos: "Viscose Lisa · 5 cores", fornecedor: "Surat Textiles", pais: "IN", container: "1×40HQ", eta: "28/09", metros: "9.200 m", fob: "US$ 26.400", cambio: "—", custo: "≈ R$ 15,90" },
+        { id: "LT-2615", status: "DESEMBARAÇO", st: "bad", artigos: "Crepe Amanda · Rosé, Preto, Cru", fornecedor: "Bursa Kumaş", pais: "TR", container: "1×20GP", eta: "27/08", metros: "4.100 m", fob: "US$ 9.700", cambio: "R$ 5,36", custo: "R$ 11,40" },
+        { id: "LT-2612", status: "RECEBIDO", st: "ok", artigos: "Sarja com Elastano · Bege, Preto", fornecedor: "Shaoxing Yicheng", pais: "CN", container: "1×20GP", eta: "11/08", metros: "2.800 m", fob: "US$ 10.200", cambio: "R$ 5,31", custo: "R$ 19,60" }
+      ].map((l) => Object.assign({}, l, { statusStyle: S[l.st] })),
+      fornecedores: [
+        { nome: "Shaoxing Yicheng", pais: "CHINA", artigos: "Malha PV, Sarja", lead: "62 D", volume: "48% do volume" },
+        { nome: "Hangzhou Wenhui", pais: "CHINA", artigos: "Suplex, Poliamida", lead: "70 D", volume: "21%" },
+        { nome: "Surat Textiles", pais: "ÍNDIA", artigos: "Viscose, Rayon", lead: "78 D", volume: "18%" },
+        { nome: "Bursa Kumaş", pais: "TURQUIA", artigos: "Crepe, Linho misto", lead: "54 D", volume: "13%" }
+      ],
+
+      aging: [
+        { label: "A VENCER", valor: "R$ 121.400", h: "108px", cor: "#3A3E43" },
+        { label: "0–30", valor: "R$ 54.200", h: "62px", cor: "#FFB020" },
+        { label: "31–60", valor: "R$ 26.100", h: "38px", cor: "#FFB020" },
+        { label: "61–90", valor: "R$ 9.400", h: "20px", cor: "#FF5C7A" },
+        { label: "+90", valor: "R$ 3.800", h: "12px", cor: "#FF5C7A" }
+      ],
+      titulos: [
+        { id: "TIT-1204", cliente: "Aurora Confecções", pedido: "PED-2418", valor: "R$ 14.880", venc: "19/09", forma: "BOLETO", status: "A VENCER", st: "neutral" },
+        { id: "TIT-1201", cliente: "Atacado Nova Era", pedido: "PED-2409", valor: "R$ 15.700", venc: "19/09", forma: "BOLETO", status: "A VENCER", st: "neutral" },
+        { id: "TIT-1198", cliente: "Vitrine Kids", pedido: "PED-2415", valor: "R$ 4.480", venc: "05/09", forma: "BOLETO", status: "A VENCER", st: "neutral" },
+        { id: "TIT-1196", cliente: "Malharia Dinâmica", pedido: "PED-2402", valor: "R$ 12.180", venc: "26/08", forma: "BOLETO", status: "VENCE EM 2D", st: "warn" },
+        { id: "TIT-1192", cliente: "Studio Bianca", pedido: "PED-2404", valor: "R$ 2.240", venc: "24/08", forma: "CARTÃO", status: "HOJE", st: "warn" },
+        { id: "TIT-1188", cliente: "Rei do Jeans", pedido: "PED-2398", valor: "R$ 6.180", venc: "02/08", forma: "BOLETO", status: "ATRASO 22D", st: "bad" },
+        { id: "TIT-1181", cliente: "Confecção Litoral", pedido: "PED-2361", valor: "R$ 3.800", venc: "18/05", forma: "BOLETO", status: "ATRASO 98D", st: "bad" },
+        { id: "TIT-1177", cliente: "JS Modas", pedido: "PED-2377", valor: "R$ 7.020", venc: "14/08", forma: "PIX", status: "LIQUIDADO", st: "ok" },
+        { id: "TIT-1174", cliente: "Aurora Confecções", pedido: "PED-2355", valor: "R$ 9.400", venc: "10/08", forma: "BOLETO", status: "LIQUIDADO", st: "ok" }
+      ].map((t) => Object.assign({}, t, {
+      statusStyle: S[t.st],
+      waCor: t.st === "bad" ? "#FF9AAE" : t.st === "warn" ? "#FFC969" : "var(--fg-tertiary)",
+      wa: WA(FONES[t.cliente] || "5511900000000", t.st === "ok"
+        ? "Olá, aqui é da tecidOps no Brás. Confirmando o recebimento do título " + t.id + " de " + t.valor + ". Obrigado!"
+        : "Olá, aqui é da tecidOps no Brás. Sobre o título " + t.id + " de " + t.valor + " com vencimento em " + t.venc + ": consegue acertar via Pix? Mando a chave por aqui.")
+    })),
+      caderneta: [
+        { nome: "JS Modas", dias: "ABERTO HÁ 6 DIAS", valor: "R$ 4.180", cor: "#FFC969" },
+        { nome: "Costura da Néia", dias: "ABERTO HÁ 3 DIAS", valor: "R$ 1.240", cor: "var(--fg)" },
+        { nome: "Ateliê Sol", dias: "ABERTO HÁ 11 DIAS", valor: "R$ 1.680", cor: "#FFC969" },
+        { nome: "Marcos Uniformes", dias: "ABERTO HÁ 2 DIAS", valor: "R$ 860", cor: "var(--fg)" },
+        { nome: "Dona Rita", dias: "ABERTO HÁ 24 DIAS", valor: "R$ 460", cor: "#FF9AAE" }
+      ].map((c) => Object.assign({}, c, {
+        wa: WA(FONES[c.nome] || "5511900000000", "Olá, aqui é da tecidOps no Brás. Ficou " + c.valor + " na caderneta. Consegue passar hoje para acertar?")
+      })),
+
+      fiscalKpis: [
+        { label: "AUTORIZADAS", valor: "118", nota: "R$ 486.320 EM AGOSTO" },
+        { label: "REJEITADAS", valor: "2", nota: "CORRIGIR NCM DO LINHO" },
+        { label: "CANCELADAS", valor: "3", nota: "DENTRO DO PRAZO" },
+        { label: "ICMS APURADO", valor: "R$ 41.870", nota: "SUBSTITUIÇÃO INCLUSA" }
+      ],
+      notas: [
+        { numero: "018442", cliente: "Malharia Dinâmica", data: "22/08", pedido: "PED-2417", cfop: "5102", valor: "R$ 11.240", icms: "R$ 1.011", status: "AUTORIZADA", st: "ok" },
+        { numero: "018441", cliente: "Atacado Nova Era", data: "20/08", pedido: "PED-2409", cfop: "5102", valor: "R$ 31.400", icms: "R$ 2.826", status: "AUTORIZADA", st: "ok" },
+        { numero: "018440", cliente: "Vitrine Kids", data: "21/08", pedido: "PED-2415", cfop: "5102", valor: "R$ 8.960", icms: "R$ 806", status: "AUTORIZADA", st: "ok" },
+        { numero: "018439", cliente: "Confecção Litoral", data: "20/08", pedido: "PED-2408", cfop: "6102", valor: "R$ 5.400", icms: "R$ 648", status: "REJEITADA · 610", st: "bad" },
+        { numero: "018438", cliente: "Studio Bianca", data: "19/08", pedido: "PED-2404", cfop: "5102", valor: "R$ 6.740", icms: "R$ 606", status: "AUTORIZADA", st: "ok" },
+        { numero: "018437", cliente: "Aurora Confecções", data: "19/08", pedido: "PED-2401", cfop: "5102", valor: "R$ 9.180", icms: "R$ 826", status: "AUTORIZADA", st: "ok" },
+        { numero: "018436", cliente: "Rei do Jeans", data: "18/08", pedido: "PED-2398", cfop: "5102", valor: "R$ 9.640", icms: "R$ 867", status: "CANCELADA", st: "neutral" },
+        { numero: "018435", cliente: "JS Modas", data: "14/08", pedido: "PED-2377", cfop: "5102", valor: "R$ 7.020", icms: "R$ 632", status: "AUTORIZADA", st: "ok" },
+        { numero: "018434", cliente: "Marcos Uniformes", data: "13/08", pedido: "PED-2370", cfop: "5102", valor: "R$ 3.120", icms: "R$ 281", status: "AUTORIZADA", st: "ok" }
+      ].map((n) => Object.assign({}, n, { statusStyle: S[n.st] })),
+
+      margens: [
+        { artigo: "Crepe Amanda", comp: "100% PES", custo: "R$ 11,40", venda: "R$ 21,50", margem: "46%", cor: "#7CEBC4", giro: "4,2×", cobertura: "38 dias" },
+        { artigo: "Tricoline Fio Tinto", comp: "100% ALG", custo: "R$ 14,20", venda: "R$ 26,40", margem: "44%", cor: "#7CEBC4", giro: "2,8×", cobertura: "62 dias" },
+        { artigo: "Sarja com Elastano", comp: "97% ALG 3% EL", custo: "R$ 19,60", venda: "R$ 32,90", margem: "40%", cor: "var(--fg)", giro: "2,1×", cobertura: "74 dias" },
+        { artigo: "Malha PV 30.1", comp: "67% PES 33% VIS", custo: "R$ 16,80", venda: "R$ 27,90", margem: "39%", cor: "var(--fg)", giro: "5,6×", cobertura: "26 dias" },
+        { artigo: "Suplex Fitness", comp: "90% PA 10% EL", custo: "R$ 23,10", venda: "R$ 38,00", margem: "38%", cor: "var(--fg)", giro: "3,4×", cobertura: "44 dias" },
+        { artigo: "Viscose Lisa", comp: "100% VIS", custo: "R$ 15,10", venda: "R$ 26,90", margem: "44%", cor: "#7CEBC4", giro: "1,6×", cobertura: "96 dias" },
+        { artigo: "Oxford Liso", comp: "100% PES", custo: "R$ 9,80", venda: "R$ 18,50", margem: "42%", cor: "var(--fg)", giro: "1,2×", cobertura: "118 dias" },
+        { artigo: "Linho Misto", comp: "55% LI 45% VIS", custo: "R$ 28,40", venda: "R$ 49,00", margem: "31%", cor: "#FF9AAE", giro: "0,7×", cobertura: "184 dias" }
+      ],
+      relatorios: [
+        { nome: "Curva ABC de artigos", periodo: "ÚLTIMOS 12 MESES" },
+        { nome: "Retalhos e perdas de corte", periodo: "AGOSTO 2026" },
+        { nome: "Comissão por vendedor", periodo: "AGOSTO 2026" },
+        { nome: "Custo landed por lote", periodo: "2026" },
+        { nome: "Clientes inativos 90 dias", periodo: "POSIÇÃO DE HOJE" },
+        { nome: "Posição de estoque por depósito", periodo: "POSIÇÃO DE HOJE" }
+      ],
+
+      mobileFila: [
+        { id: "R-4413", artigo: "Malha PV Off White", status: "OK", st: "ok" },
+        { id: "R-4430", artigo: "Crepe Amanda Rosé", status: "OK", st: "ok" },
+        { id: "R-4356", artigo: "Linho Misto Cru", status: "DIVERGE", st: "bad" },
+        { id: "R-4421", artigo: "Suplex Marinho", status: "PENDENTE", st: "warn" }
+      ].map((m) => Object.assign({}, m, { style: S[m.st] })),
+      mobileNotas: [
+        { tag: "LEITURA", titulo: "Etiqueta com QR por rolo", texto: "Cada rolo recebe etiqueta impressa na entrada do lote. O QR abre a ficha com saldo, lote e preço de venda." },
+        { tag: "CORTE", titulo: "Baixa na hora do corte", texto: "O estoquista confirma a metragem cortada no celular. O saldo do rolo e o pedido no balcão são atualizados juntos." },
+        { tag: "DIVERGÊNCIA", titulo: "Ajuste exige justificativa", texto: "Diferença acima de 1 m pede motivo (medida do fornecedor, perda de corte, ponta). Fica no histórico do rolo." },
+        { tag: "OFFLINE", titulo: "Funciona sem sinal no depósito", texto: "As leituras ficam na fila e sincronizam quando o celular volta à rede da loja." }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
