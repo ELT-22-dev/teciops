@@ -34,6 +34,34 @@
 </style>
 </helmet>
 
+<sc-if value="{{ showLogin }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;width:100%;background:#e9edf1;display:flex;align-items:center;justify-content:center;font-family:var(--font-sans);padding:24px;">
+  <div style="width:380px;background:var(--ink-1);border:1px solid var(--border-default);border-radius:10px;padding:32px;box-shadow:0 50px 100px rgba(15,25,35,0.28);">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+      <div style="width:30px;height:30px;background:var(--c-amber);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2A1A00" stroke-width="1.6" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/><path d="M7 3v18M13 3v18M19 3v18" opacity="0.45"/></svg>
+      </div>
+      <span style="font-weight:500;font-size:16px;letter-spacing:-0.03em;color:var(--fg);">tecid<b style="font-weight:800;">Ops</b></span>
+    </div>
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;color:var(--fg-tertiary);text-transform:uppercase;margin-bottom:20px;">ENTRAR NO CONSOLE</div>
+    <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
+    <div style="background:rgba(255,92,122,0.10);border:1px solid rgba(255,92,122,0.34);color:#FF9AAE;border-radius:6px;padding:10px 12px;font-size:12.5px;margin-bottom:16px;">{{ loginError }}</div>
+    </sc-if>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+      <label style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--fg-tertiary);">E-MAIL</label>
+      <input value="{{ loginEmail }}" onChange="{{ onLoginEmail }}" onKeyDown="{{ onLoginKey }}" placeholder="voce@empresa.com.br" style="background:var(--ink-2);border:1px solid var(--border-default);border-radius:6px;padding:10px 12px;font-size:13px;color:var(--fg);" />
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
+      <label style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--fg-tertiary);">SENHA</label>
+      <input type="password" value="{{ loginPassword }}" onChange="{{ onLoginPassword }}" onKeyDown="{{ onLoginKey }}" placeholder="••••••••" style="background:var(--ink-2);border:1px solid var(--border-default);border-radius:6px;padding:10px 12px;font-size:13px;color:var(--fg);" />
+    </div>
+    <div onClick="{{ doLogin }}" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;border-radius:6px;background:var(--c-amber);color:#2A1A00;font-size:13px;font-weight:600;cursor:pointer;">{{ loginBtnLabel }}</div>
+    <div style="margin-top:16px;font-size:11px;color:var(--fg-tertiary);text-align:center;line-height:1.5;">Login de demonstração:<br />owner@tecidops.com.br · Demo1234!</div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showApp }}" hint-placeholder-val="{{ true }}">
 <div style="min-height:100vh;width:100%;background:#e9edf1;padding:44px 24px;font-family:var(--font-sans);overflow-x:auto;">
 <div style="width:1360px;min-width:1360px;margin:0 auto;box-shadow:0 50px 100px rgba(15,25,35,0.28);border-radius:10px;overflow:hidden;display:flex;background:var(--ink-1);border:1px solid var(--border-default);">
 
@@ -95,11 +123,11 @@
         <span style="width:6px;height:6px;border-radius:50%;background:var(--signal-live);box-shadow:0 0 8px rgba(229,255,75,0.7);"></span>
         <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--fg-tertiary);">SINC · 14:32:08</span>
       </div>
-      <div style="display:flex;align-items:center;gap:9px;">
-        <div style="width:26px;height:26px;border-radius:4px;border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;color:var(--fg-secondary);">RG</div>
+      <div onClick="{{ logout }}" title="Clique para sair" style="display:flex;align-items:center;gap:9px;cursor:pointer;">
+        <div style="width:26px;height:26px;border-radius:4px;border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;color:var(--fg-secondary);">{{ userInitials }}</div>
         <div>
-          <div style="font-size:12px;font-weight:500;color:var(--fg-secondary);">Rogério Lima</div>
-          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.12em;color:var(--fg-muted);">DONO · BRÁS</div>
+          <div style="font-size:12px;font-weight:500;color:var(--fg-secondary);">{{ userName }}</div>
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.12em;color:var(--fg-muted);">{{ userRoleLabel }} · SAIR</div>
         </div>
       </div>
     </div>
@@ -206,7 +234,7 @@
       <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;">
         <div>
           <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 01 · FATURAMENTO</div>
-          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">Agosto/2026 · 18 dias úteis corridos</h1>
+          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">{{ dashPeriodo }}</h1>
         </div>
         <div style="display:flex;gap:8px;">
           <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:var(--fg-secondary);border:1px solid var(--border-strong);border-radius:4px;padding:8px 12px;cursor:pointer;">MÊS</div>
@@ -217,28 +245,28 @@
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px;">
         <div style="border:1px solid var(--border-default);border-radius:8px;padding:15px 16px;background:var(--ink-3);">
           <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:10px;">FATURAMENTO</div>
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">R$ 486.320</div>
-          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--c-mint);margin-top:7px;">↗ 12,4% vs jul</div>
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">{{ kpiRevenue }}</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:{{ kpiRevenueColor }};margin-top:7px;">{{ kpiRevenueGrowth }}</div>
         </div>
         <div style="border:1px solid var(--border-default);border-radius:8px;padding:15px 16px;background:var(--ink-3);">
           <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:10px;">METROS VENDIDOS</div>
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">38.412 m</div>
-          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:7px;">11.240 kg equivalentes</div>
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">{{ kpiMeters }}</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:7px;">{{ kpiMetersPerOrder }}</div>
         </div>
         <div style="border:1px solid var(--border-default);border-radius:8px;padding:15px 16px;background:var(--ink-3);">
           <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:10px;">TICKET MÉDIO</div>
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">R$ 3.842</div>
-          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:7px;">3,8 artigos por pedido</div>
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">{{ kpiTicket }}</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:7px;">{{ kpiOrdersCount }}</div>
         </div>
         <div style="border:1px solid var(--border-default);border-radius:8px;padding:15px 16px;background:var(--ink-3);">
           <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:10px;">A RECEBER</div>
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">R$ 214.900</div>
-          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:7px;">28 títulos abertos</div>
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">{{ kpiReceivable }}</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:7px;">{{ kpiTitlesCount }}</div>
         </div>
         <div style="border:1px solid rgba(255,92,122,0.30);border-radius:8px;padding:15px 16px;background:rgba(255,92,122,0.06);">
           <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:#FF9AAE;margin-bottom:10px;">EM ATRASO</div>
-          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">R$ 19.140</div>
-          <div style="font-family:var(--font-mono);font-size:10.5px;color:#FF9AAE;margin-top:7px;">4,2% da carteira</div>
+          <div style="font-family:var(--font-mono);font-size:24px;font-weight:500;letter-spacing:-0.02em;color:var(--fg);">{{ kpiOverdue }}</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:#FF9AAE;margin-top:7px;">{{ kpiOverduePct }}</div>
         </div>
       </div>
 
@@ -342,7 +370,7 @@
       <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px;">
         <div>
           <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 02 · ESTOQUE</div>
-          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">312 rolos · 24.860 m em dois depósitos</h1>
+          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">{{ estoqueHeaderTexto }}</h1>
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
           <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:var(--fg-tertiary);border:1px solid var(--border-default);border-radius:4px;padding:8px 12px;cursor:pointer;">IMPORTAR LOTE</div>
@@ -453,17 +481,17 @@
           </div>
 
           <div style="margin-top:18px;border-top:1px solid var(--border-subtle);padding-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-            <div style="border:1px solid var(--border-default);border-radius:6px;padding:12px 14px;">
+            <div onClick="{{ cyclePdvCliente }}" title="Clique para trocar o cliente" style="border:1px solid var(--border-default);border-radius:6px;padding:12px 14px;cursor:pointer;">
               <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">CLIENTE</div>
-              <div style="font-size:13px;color:var(--fg);margin-top:6px;">Aurora Confecções</div>
+              <div style="font-size:13px;color:var(--fg);margin-top:6px;">{{ pdvClienteNome }}</div>
             </div>
             <div style="border:1px solid var(--border-default);border-radius:6px;padding:12px 14px;">
               <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--fg-muted);">VENDEDOR</div>
-              <div style="font-size:13px;color:var(--fg);margin-top:6px;">Wilson · balcão 2</div>
+              <div style="font-size:13px;color:var(--fg);margin-top:6px;">{{ pdvVendedorNome }}</div>
             </div>
             <div style="border:1px solid rgba(229,255,75,0.24);background:rgba(229,255,75,0.05);border-radius:6px;padding:12px 14px;">
               <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:#D8F26A;">LIMITE DISPONÍVEL</div>
-              <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg);margin-top:6px;">R$ 22.400 de 40.000</div>
+              <div style="font-family:var(--font-mono);font-size:13px;color:var(--fg);margin-top:6px;">{{ pdvLimiteTexto }}</div>
             </div>
           </div>
         </div>
@@ -512,9 +540,11 @@
             </div>
           </div>
 
+          <sc-if value="{{ checkoutError }}" hint-placeholder-val="{{ false }}">
+          <div style="background:rgba(255,92,122,0.10);border:1px solid rgba(255,92,122,0.34);color:#FF9AAE;border-radius:6px;padding:9px 11px;font-size:11.5px;margin-top:12px;">{{ checkoutError }}</div>
+          </sc-if>
           <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
-            <div style="text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:13px;cursor:pointer;font-weight:600;">FECHAR E EMITIR NF-e</div>
-            <div style="text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--fg-secondary);border:1px solid var(--border-strong);border-radius:4px;padding:11px;cursor:pointer;">SALVAR COMO ORÇAMENTO</div>
+            <div onClick="{{ finalizarPedido }}" style="text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:13px;cursor:pointer;font-weight:600;">{{ checkoutLabel }}</div>
           </div>
         </div>
       </div>
@@ -526,7 +556,7 @@
       <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px;">
         <div>
           <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 04 · PEDIDOS</div>
-          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">126 pedidos no mês · 9 aguardando corte</h1>
+          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">{{ pedidosHeaderTexto }}</h1>
         </div>
         <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:9px 13px;cursor:pointer;font-weight:600;">+ NOVO PEDIDO</div>
       </div>
@@ -567,7 +597,7 @@
       <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px;">
         <div>
           <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 05 · CLIENTES</div>
-          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">184 confecções cadastradas · 71 ativas em 90 dias</h1>
+          <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">{{ clientesHeaderTexto }}</h1>
         </div>
         <div style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:#2A1A00;background:var(--c-amber);border-radius:4px;padding:9px 13px;cursor:pointer;font-weight:600;">+ CADASTRAR</div>
       </div>
@@ -578,7 +608,7 @@
             <span>CONFECÇÃO</span><span>MIX</span><span>LIMITE</span><span>EM ABERTO</span><span>SITUAÇÃO</span>
           </div>
           <sc-for list="{{ clientes }}" as="c" hint-placeholder-count="8">
-            <div style="display:grid;grid-template-columns:1.5fr 96px 118px 106px 104px;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border-subtle);align-items:center;">
+            <div onClick="{{ c.click }}" style="display:grid;grid-template-columns:1.5fr 96px 118px 106px 104px;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border-subtle);align-items:center;cursor:pointer;">
               <div style="min-width:0;">
                 <div style="font-size:12.5px;font-weight:500;color:var(--fg);">{{ c.nome }}</div>
                 <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--fg-muted);margin-top:3px;">{{ c.cnpj }} · {{ c.bairro }}</div>
@@ -592,14 +622,14 @@
         </div>
 
         <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;align-self:start;">
-          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:13px;">FICHA · CLI-0142</div>
-          <div style="font-size:17px;font-weight:600;letter-spacing:-0.02em;color:var(--fg);">Aurora Confecções</div>
-          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-secondary);margin-top:5px;">12.480.331/0001-09 · Brás</div>
-          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:3px;">Compra desde 03/2021 · 96 pedidos</div>
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;color:var(--fg-tertiary);margin-bottom:13px;">FICHA · {{ selCliente.codigo }}</div>
+          <div style="font-size:17px;font-weight:600;letter-spacing:-0.02em;color:var(--fg);">{{ selCliente.nome }}</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-secondary);margin-top:5px;">{{ selCliente.cnpjBairro }}</div>
+          <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);margin-top:3px;">{{ selCliente.desde }}</div>
 
           <div style="margin:16px 0;padding:13px 14px;border:1px solid rgba(255,176,32,0.28);background:rgba(255,176,32,0.06);border-radius:6px;">
-            <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--c-amber-soft);">MIX HABITUAL · 4 ARTIGOS</div>
-            <div style="font-size:12.5px;color:var(--fg);margin-top:7px;line-height:1.5;">Malha PV 30.1, Suplex, Crepe Amanda, Viscose Lisa</div>
+            <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--c-amber-soft);">MIX HABITUAL · {{ selCliente.mixCount }}</div>
+            <div style="font-size:12.5px;color:var(--fg);margin-top:7px;line-height:1.5;">{{ selCliente.mixNomes }}</div>
           </div>
 
           <div style="display:flex;flex-direction:column;gap:11px;">
@@ -615,7 +645,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFC969" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.7-4.8A8.5 8.5 0 1 1 21 11.5Z"/><path d="M9 9.6c0 3 2.4 5.4 5.4 5.4.6 0 1-.4 1-1l-1.4-.8-1 .8a5.6 5.6 0 0 1-2-2l.8-1L11 9.6c0-.6-.4-1-1-1s-1 .4-1 1Z"/></svg>
             <div style="flex:1;">
               <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--c-amber-soft);">FALAR NO WHATSAPP</div>
-              <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg);margin-top:3px;">+55 11 97412-3388 · Márcia</div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg);margin-top:3px;">{{ selCliente.telefone }}</div>
             </div>
             <span style="font-family:var(--font-mono);font-size:11px;color:var(--c-amber-soft);">→</span>
           </a>
@@ -633,7 +663,7 @@
     <div>
       <div style="margin-bottom:16px;">
         <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 06 · IMPORTAÇÃO</div>
-        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">5 lotes em curso · US$ 214.600 embarcados</h1>
+        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">{{ importHeaderTexto }}</h1>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 300px;gap:12px;">
@@ -709,7 +739,7 @@
     <div>
       <div style="margin-bottom:16px;">
         <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 07 · FINANCEIRO</div>
-        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">Contas a receber · R$ 214.900 em 28 títulos</h1>
+        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">{{ finHeaderTexto }}</h1>
       </div>
 
       <div style="border:1px solid var(--border-default);border-radius:8px;background:var(--ink-3);padding:18px;margin-bottom:12px;">
@@ -769,7 +799,7 @@
           </div>
           <div style="margin-top:15px;padding-top:13px;border-top:1px solid var(--border-default);display:flex;justify-content:space-between;align-items:baseline;">
             <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;color:var(--fg-tertiary);">TOTAL FIADO</span>
-            <span style="font-family:var(--font-mono);font-size:18px;color:var(--fg);">R$ 8.420</span>
+            <span style="font-family:var(--font-mono);font-size:18px;color:var(--fg);">{{ cadernetaTotal }}</span>
           </div>
         </div>
       </div>
@@ -780,7 +810,7 @@
     <div>
       <div style="margin-bottom:16px;">
         <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--c-amber-soft);margin-bottom:7px;">OPS · 08 · FISCAL</div>
-        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">NF-e de agosto · 118 autorizadas, 2 rejeitadas</h1>
+        <h1 style="margin:0;font-size:25px;font-weight:600;letter-spacing:-0.03em;color:var(--fg);">{{ fiscalHeaderTexto }}</h1>
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;">
@@ -931,9 +961,13 @@
   </div>
 </div>
 </div>
+</sc-if>
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;mostrarAlertas&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Painel&quot;},&quot;unidadePadrao&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Metro&quot;,&quot;Quilo&quot;],&quot;default&quot;:&quot;Metro&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Balcão&quot;},&quot;agenteAberto&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Agente OPS&quot;}}">
+const API_BASE = "https://web-apps-tecidos-api.tgo9zw.easypanel.host/api/v1";
+const SESSION_KEY = "teciops_session";
+
 const ACT = "background:rgba(255,176,32,0.10);border:1px solid rgba(255,176,32,0.42);color:#FFC969;box-shadow:inset 2px 0 0 #FFB020;";
 const CHIP_ON = "background:rgba(255,176,32,0.12);border:1px solid rgba(255,176,32,0.42);color:#FFC969;";
 const S = {
@@ -942,226 +976,623 @@ const S = {
   bad: "background:rgba(255,92,122,0.10);border:1px solid rgba(255,92,122,0.34);color:#FF9AAE;",
   neutral: "background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);color:#9CA0A6;"
 };
-const WA = (fone, msg) => "https://wa.me/" + fone.replace(/\D/g, "") + "?text=" + encodeURIComponent(msg);
-const FONES = {
-  "Aurora Confecções": "5511974123388",
-  "Malharia Dinâmica": "5511981220417",
-  "Vitrine Kids": "5511993047761",
-  "Atacado Nova Era": "5511987650122",
-  "JS Modas": "5511976338890",
-  "Studio Bianca": "5511995412207",
-  "Rei do Jeans": "5511982004573",
-  "Confecção Litoral": "5511970118842",
-  "Costura da Néia": "5511984772019",
-  "Ateliê Sol": "5511973550164",
-  "Marcos Uniformes": "5511992870431",
-  "Dona Rita": "5511971204488"
-};
-const BRL = (n) => "R$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const WA = (fone, msg) => fone ? ("https://wa.me/" + String(fone).replace(/\D/g, "") + "?text=" + encodeURIComponent(msg)) : null;
 
-const ROLOS = [
-  { id: "R-4412", artigo: "Malha PV 30.1", cor: "Preto", comp: "67% PES 33% VIS", saldo: "42,5 m", larg: "1,80", peso: "12,4 kg", local: "DEP-A · P12", status: "INTEIRO", st: "neutral", custo: "R$ 16,80", venda: "R$ 27,90", lote: "LT-2618" },
-  { id: "R-4413", artigo: "Malha PV 30.1", cor: "Off White", comp: "67% PES 33% VIS", saldo: "38,0 m", larg: "1,80", peso: "11,1 kg", local: "DEP-A · P12", status: "INTEIRO", st: "neutral", custo: "R$ 16,80", venda: "R$ 27,90", lote: "LT-2618" },
-  { id: "R-4430", artigo: "Crepe Amanda", cor: "Rosé", comp: "100% PES", saldo: "72,0 m", larg: "1,50", peso: "9,8 kg", local: "DEP-A · P07", status: "INTEIRO", st: "neutral", custo: "R$ 11,40", venda: "R$ 21,50", lote: "LT-2609" },
-  { id: "R-4421", artigo: "Suplex Fitness", cor: "Marinho", comp: "90% PA 10% EL", saldo: "61,2 m", larg: "1,60", peso: "18,6 kg", local: "DEP-B · P02", status: "INTEIRO", st: "neutral", custo: "R$ 23,10", venda: "R$ 38,00", lote: "LT-2612" },
-  { id: "R-4402", artigo: "Tricoline Fio Tinto", cor: "Azul Royal", comp: "100% ALG", saldo: "55,0 m", larg: "1,50", peso: "7,2 kg", local: "DEP-A · P09", status: "RESERVADO", st: "warn", custo: "R$ 14,20", venda: "R$ 26,40", lote: "LT-2601" },
-  { id: "R-4408", artigo: "Sarja com Elastano", cor: "Bege", comp: "97% ALG 3% EL", saldo: "33,7 m", larg: "1,60", peso: "14,9 kg", local: "DEP-B · P05", status: "RESERVADO", st: "warn", custo: "R$ 19,60", venda: "R$ 32,90", lote: "LT-2605" },
-  { id: "R-4390", artigo: "Viscose Lisa", cor: "Vinho", comp: "100% VIS", saldo: "12,8 m", larg: "1,45", peso: "3,1 kg", local: "DEP-A · P04", status: "RETALHO", st: "neutral", custo: "R$ 15,10", venda: "R$ 26,90", lote: "LT-2601" },
-  { id: "R-4377", artigo: "Oxford Liso", cor: "Preto", comp: "100% PES", saldo: "8,4 m", larg: "1,50", peso: "2,4 kg", local: "DEP-A · P02", status: "RETALHO", st: "neutral", custo: "R$ 9,80", venda: "R$ 18,50", lote: "LT-2588" },
-  { id: "R-4356", artigo: "Linho Misto", cor: "Cru", comp: "55% LI 45% VIS", saldo: "4,2 m", larg: "1,40", peso: "1,3 kg", local: "DEP-A · P01", status: "CRÍTICO", st: "bad", custo: "R$ 28,40", venda: "R$ 49,00", lote: "LT-2570" },
-  { id: "R-4433", artigo: "Crepe Amanda", cor: "Preto", comp: "100% PES", saldo: "68,5 m", larg: "1,50", peso: "9,3 kg", local: "DEP-A · P07", status: "INTEIRO", st: "neutral", custo: "R$ 11,40", venda: "R$ 21,50", lote: "LT-2609" }
-];
+function fmt1(n) { return Number(n || 0).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
+function fmt2(n) { return Number(n || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function fmt0(n) { return Math.round(Number(n || 0)).toLocaleString("pt-BR"); }
+const BRL = (n) => "R$ " + fmt2(n);
+const money0 = (n) => "R$ " + fmt0(n);
+const usd0 = (n) => "US$ " + fmt0(n);
+function fmtDateShort(d) {
+  if (!d) return "—";
+  const dt = new Date(d);
+  return String(dt.getDate()).padStart(2, "0") + "/" + String(dt.getMonth() + 1).padStart(2, "0");
+}
+function fmtMonthYear(d) {
+  if (!d) return "—";
+  const dt = new Date(d);
+  return String(dt.getMonth() + 1).padStart(2, "0") + "/" + dt.getFullYear();
+}
+const MESES = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
+function colorSwatch(name) {
+  let hash = 0;
+  const str = String(name || "");
+  for (let i = 0; i < str.length; i++) hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+  return "hsl(" + (hash % 360) + ",38%,32%)";
+}
 
-const CORTES = {
-  "R-4412": [
-    { cliente: "Aurora Confecções", data: "22/08", pedido: "PED-2418", metros: "-120 m" },
-    { cliente: "Malharia Dinâmica", data: "19/08", pedido: "PED-2402", metros: "-85 m" },
-    { cliente: "JS Modas", data: "14/08", pedido: "PED-2377", metros: "-40 m" },
-    { cliente: "Entrada do lote", data: "06/08", pedido: "LT-2618", metros: "+287 m" }
-  ]
-};
+const ROLL_STATUS = { WHOLE: ["INTEIRO", "neutral"], RESERVED: ["RESERVADO", "warn"], REMNANT: ["RETALHO", "neutral"], CRITICAL: ["CRÍTICO", "bad"] };
+const ORDER_STAGE = { QUOTE: ["ORÇAMENTO", "neutral"], AWAITING_CUT: ["AGUARDANDO CORTE", "warn"], CUT: ["CORTADO", "warn"], INVOICED: ["FATURADO", "ok"], DELIVERED: ["ENTREGUE", "neutral"], CANCELLED: ["CANCELADO", "bad"] };
+const TITLE_STATUS = { OPEN: ["A VENCER", "neutral"], OVERDUE: ["ATRASADO", "bad"], PAID: ["LIQUIDADO", "ok"], CANCELLED: ["CANCELADO", "neutral"] };
+const NOTE_STATUS = { PENDING: ["PENDENTE", "warn"], AUTHORIZED: ["AUTORIZADA", "ok"], REJECTED: ["REJEITADA", "bad"], CANCELLED: ["CANCELADA", "neutral"] };
+const IMPORT_STATUS = { BOOKED: ["RESERVADO", "neutral"], SHIPPED: ["EMBARCADO", "neutral"], IN_TRANSIT: ["EM TRÂNSITO", "warn"], CLEARING: ["DESEMBARAÇO", "bad"], ARRIVED: ["RECEBIDO", "ok"] };
+const PAYMENT_LABEL = { CASH: "DINHEIRO", PIX: "PIX", CARD: "CARTÃO", BOLETO: "BOLETO", TERM: "A PRAZO" };
+const ROLE_LABEL = { OWNER: "DONO", MANAGER: "GERENTE", SELLER: "VENDEDOR", WAREHOUSE: "DEPÓSITO", FINANCE: "FINANCEIRO" };
 
-const ARTIGOS = [
-  { nome: "Malha PV 30.1", cor: "Preto", comp: "67% PES 33% VIS", preco: "R$ 27,90/m", p: 27.9, disp: "412 m", swatch: "#141414" },
-  { nome: "Malha PV 30.1", cor: "Off White", comp: "67% PES 33% VIS", preco: "R$ 27,90/m", p: 27.9, disp: "268 m", swatch: "#EFEDE6" },
-  { nome: "Crepe Amanda", cor: "Rosé", comp: "100% PES", preco: "R$ 21,50/m", p: 21.5, disp: "504 m", swatch: "#C98A88" },
-  { nome: "Suplex Fitness", cor: "Marinho", comp: "90% PA 10% EL", preco: "R$ 38,00/m", p: 38, disp: "186 m", swatch: "#1E2A44" },
-  { nome: "Tricoline Fio Tinto", cor: "Azul Royal", comp: "100% ALG", preco: "R$ 26,40/m", p: 26.4, disp: "330 m", swatch: "#22459B" },
-  { nome: "Viscose Lisa", cor: "Vinho", comp: "100% VIS", preco: "R$ 26,90/m", p: 26.9, disp: "94 m", swatch: "#6B2130" },
-  { nome: "Sarja com Elastano", cor: "Bege", comp: "97% ALG 3% EL", preco: "R$ 32,90/m", p: 32.9, disp: "212 m", swatch: "#C4AE8E" },
-  { nome: "Oxford Liso", cor: "Preto", comp: "100% PES", preco: "R$ 18,50/m", p: 18.5, disp: "148 m", swatch: "#17181A" },
-  { nome: "Linho Misto", cor: "Cru", comp: "55% LI 45% VIS", preco: "R$ 49,00/m", p: 49, disp: "34 m", swatch: "#D8CDB8" }
-];
-
-const RESPOSTAS = [
-  {
-    k: ["estoque", "saldo", "rolo", "malha", "tem "],
-    texto: "Saldo disponível por artigo, já descontando o que está reservado em pedido:",
-    linhas: [
-      { k: "MALHA PV 30.1 · 4 CORES", v: "680 m", cor: "var(--fg)" },
-      { k: "CREPE AMANDA · 3 CORES", v: "504 m", cor: "var(--fg)" },
-      { k: "SUPLEX FITNESS", v: "186 m", cor: "#FFC969" },
-      { k: "LINHO MISTO CRU", v: "4,2 m", cor: "#FF9AAE" }
-    ],
-    acao: "ABRIR ESTOQUE",
-    wa: { nome: "Aurora Confecções", msg: "Olá Márcia, aqui é da tecidOps no Brás. Temos 680 m de Malha PV 30.1 em quatro cores prontos para retirada e o lote novo chega em 02/09. Quer que eu reserve?" }
-  },
-  {
-    k: ["atras", "cobran", "receber", "devendo", "inadim"],
-    texto: "R$ 19.140 vencidos em 3 clientes. O Rei do Jeans concentra 32% e tem pedido novo travado.",
-    linhas: [
-      { k: "REI DO JEANS · 22D", v: "R$ 6.180", cor: "#FF9AAE" },
-      { k: "CONFECÇÃO LITORAL · 98D", v: "R$ 3.800", cor: "#FF9AAE" },
-      { k: "CADERNETA VENCIDA", v: "R$ 460", cor: "#FFC969" }
-    ],
-    acao: "REGISTRAR CONTATO",
-    wa: { nome: "Rei do Jeans", msg: "Bom dia, aqui é da tecidOps no Brás. O título TIT-1188 de R$ 6.180 venceu em 02/08. Consegue acertar hoje via Pix? Assim já libero o PED-2398 para corte." }
-  },
-  {
-    k: ["pedido", "corte", "cortar", "separa"],
-    texto: "9 pedidos aguardando corte, 1.840 m no total. O gargalo está no depósito B com duas peças de Suplex.",
-    linhas: [
-      { k: "PED-2418 · AURORA", v: "620 m", cor: "var(--fg)" },
-      { k: "PED-2412 · JS MODAS", v: "190 m", cor: "var(--fg)" },
-      { k: "MAIS 7 PEDIDOS", v: "1.030 m", cor: "var(--fg-secondary)" }
-    ],
-    acao: "IMPRIMIR ROMANEIOS",
-    wa: { nome: "Vitrine Kids", msg: "Olá, aqui é da tecidOps no Brás. Seu pedido PED-2415 está cortado e pronto para retirada, 340 m em 5 artigos. Retira hoje ou mando pelo transportador?" }
-  },
-  {
-    k: ["lote", "importa", "chega", "container", "cambio", "câmbio"],
-    texto: "LT-2618 chega em 02/09 com 8.400 m de Malha PV. Custo landed de R$ 16,80/m ao câmbio de 5,42 — 2,4% acima do estoque atual.",
-    linhas: [
-      { k: "LT-2615 · DESEMBARAÇO", v: "27/08", cor: "#FFC969" },
-      { k: "LT-2618 · EM TRÂNSITO", v: "02/09", cor: "var(--fg)" },
-      { k: "LT-2621 · EMBARCADO", v: "14/09", cor: "var(--fg)" }
-    ],
-    acao: "VER IMPORTAÇÃO"
-  },
-  {
-    k: ["cliente", "aurora", "limite", "credito", "crédito"],
-    texto: "Aurora Confecções: R$ 22.800 de compra média por mês, paga em 26 dias, 4 artigos no mix. Limite disponível de R$ 22.400.",
-    linhas: [
-      { k: "EM ABERTO", v: "R$ 17.600", cor: "var(--fg)" },
-      { k: "METROS EM 90D", v: "4.180 m", cor: "var(--fg)" },
-      { k: "SITUAÇÃO", v: "EM DIA", cor: "#7CEBC4" }
-    ],
-    acao: "ABRIR FICHA",
-    wa: { nome: "Aurora Confecções", msg: "Olá Márcia, aqui é da tecidOps. Seu limite disponível é de R$ 22.400 e o próximo vencimento é 19/09. Precisa de tecido essa semana?" }
-  },
-  {
-    k: ["margem", "preco", "preço", "lucro", "giro", "recompra", "comprar"],
-    texto: "Linho Misto trava capital: giro de 0,7× e 184 dias de cobertura com a menor margem da loja. Crepe Amanda é o oposto — repor no próximo lote.",
-    linhas: [
-      { k: "CREPE AMANDA", v: "46% · GIRO 4,2×", cor: "#7CEBC4" },
-      { k: "MALHA PV 30.1", v: "39% · GIRO 5,6×", cor: "var(--fg)" },
-      { k: "LINHO MISTO", v: "31% · GIRO 0,7×", cor: "#FF9AAE" }
-    ],
-    acao: "SUGERIR RECOMPRA",
-    wa: { nome: "Malharia Dinâmica", msg: "Bom dia, aqui é da tecidOps no Brás. Chegou Crepe Amanda em três cores a R$ 21,50/m com pronta entrega. Quer que eu separe uma peça?" }
-  },
-  {
-    k: ["nota", "nf", "fiscal", "sefaz", "icms"],
-    texto: "118 notas autorizadas em agosto. Duas rejeitadas pelo código 610: NCM do Linho Misto está divergente do cadastro.",
-    linhas: [
-      { k: "REJEITADAS", v: "2", cor: "#FF9AAE" },
-      { k: "ICMS APURADO", v: "R$ 41.870", cor: "var(--fg)" }
-    ],
-    acao: "CORRIGIR NCM"
+async function apiFetch(path, token, opts) {
+  opts = opts || {};
+  const headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
+  if (token) headers.Authorization = "Bearer " + token;
+  const res = await fetch(API_BASE + path, Object.assign({}, opts, { headers }));
+  if (res.status === 204) return null;
+  let body = null;
+  try { body = await res.json(); } catch (e) {}
+  if (!res.ok) {
+    const err = new Error((body && body.error) || ("Erro " + res.status));
+    err.status = res.status;
+    err.body = body;
+    throw err;
   }
-];
-
-const FALLBACK = {
-  texto: "Consigo responder sobre estoque de rolos, pedidos em corte, limite e histórico de cliente, títulos em atraso, lotes de importação e margem por artigo. Pergunte como falaria no balcão.",
-  linhas: []
-};
+  return body;
+}
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+function saveSession(session) {
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch (e) {}
+}
+function clearSession() {
+  try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+}
 
 class Component extends DCLogic {
   state = {
+    booting: true,
+    auth: null,
+
+    loginEmail: "",
+    loginPassword: "",
+    loginError: "",
+    loggingIn: false,
+
     screen: "dash",
     agente: true,
     draft: "",
     digitando: false,
-    msgs: [
-      { role: "bot", texto: "Bom dia, Rogério. Fechamento de ontem: R$ 18.240 em 6 pedidos. Duas coisas pedem decisão hoje.", linhas: [{ k: "LINHO MISTO CRU", v: "4,2 m EM ESTOQUE", cor: "#FF9AAE" }, { k: "REI DO JEANS", v: "R$ 6.180 EM ATRASO", cor: "#FF9AAE" }], hora: "08:12:04" },
-      { role: "user", texto: "quanto de malha pv preto ainda tenho pra vender essa semana", hora: "08:13:22" },
-      { role: "bot", texto: "412 m de Malha PV 30.1 preto livres, em dois rolos no DEP-A P12. Sai 5,6× por mês — dá 26 dias de cobertura, e o lote LT-2618 chega em 02/09.", linhas: [{ k: "R-4412 · DEP-A P12", v: "42,5 m", cor: "var(--fg)" }, { k: "OUTROS 8 ROLOS", v: "369,5 m", cor: "var(--fg)" }], acao: "RESERVAR PARA AURORA", wa: { nome: "Aurora Confecções", msg: "Olá Márcia, aqui é da tecidOps. Separei 412 m de Malha PV 30.1 preto a R$ 27,90/m. Reservo no seu nome até amanhã?" }, hora: "08:13:25" }
-    ],
-    rolo: "R-4412",
+    msgs: [],
+
+    loaded: {},
+    loading: {},
+    err: {},
+
+    dashboard: null,
+    rollsList: [],
+    rollDetail: null,
+    selectedRollId: null,
+    articles: [],
+    pdvRolls: [],
+    orders: [],
+    orderKpis: null,
+    customers: [],
+    customerDetail: null,
+    selectedCustomerId: null,
+    pdvCustomerId: null,
+    importLots: [],
+    suppliers: [],
+    titles: [],
+    aging: null,
+    notes: [],
+    margins: [],
+    warehouseQueue: [],
+
     filtro: "TODOS",
-    pgto: "BOLETO 28D",
-    cart: [
-      { nome: "Malha PV 30.1", cor: "Preto", q: 120, p: 27.9 },
-      { nome: "Crepe Amanda", cor: "Rosé", q: 80, p: 21.5 },
-      { nome: "Suplex Fitness", cor: "Marinho", q: 45, p: 38 }
-    ]
+    pgto: "PIX",
+    cart: [],
+    checkoutLoading: false,
+    checkoutError: ""
   };
 
-  go(screen) { return () => this.setState({ screen }); }
+  async componentDidMount() {
+    const session = loadSession();
+    if (session && session.accessToken) {
+      try {
+        const me = await apiFetch("/auth/me", session.accessToken);
+        this.setState({ auth: Object.assign({}, session, { user: me }), booting: false });
+        this.loadScreenData("dash");
+      } catch (e) {
+        clearSession();
+        this.setState({ auth: null, booting: false });
+      }
+    } else {
+      this.setState({ booting: false });
+    }
+  }
+
+  async apiCall(path, opts) {
+    const auth = this.state.auth;
+    try {
+      return await apiFetch(path, auth ? auth.accessToken : null, opts);
+    } catch (e) {
+      if (e.status === 401 && auth && auth.refreshToken) {
+        try {
+          const session = await apiFetch("/auth/refresh", null, { method: "POST", body: JSON.stringify({ refreshToken: auth.refreshToken }) });
+          const newAuth = { accessToken: session.accessToken, refreshToken: session.refreshToken, user: session.user };
+          saveSession(newAuth);
+          this.setState({ auth: newAuth });
+          return await apiFetch(path, newAuth.accessToken, opts);
+        } catch (e2) {
+          clearSession();
+          this.setState({ auth: null });
+          throw e2;
+        }
+      }
+      throw e;
+    }
+  }
+
+  async submitLogin() {
+    const email = this.state.loginEmail.trim();
+    const password = this.state.loginPassword;
+    if (!email || !password) { this.setState({ loginError: "Informe e-mail e senha." }); return; }
+    this.setState({ loggingIn: true, loginError: "" });
+    try {
+      const result = await apiFetch("/auth/login", null, { method: "POST", body: JSON.stringify({ email, password }) });
+      const auth = { accessToken: result.accessToken, refreshToken: result.refreshToken, user: result.user };
+      saveSession(auth);
+      this.setState({ auth, loggingIn: false, loginPassword: "" });
+      this.loadScreenData("dash");
+    } catch (e) {
+      this.setState({ loggingIn: false, loginError: (e && e.message) || "Falha ao entrar." });
+    }
+  }
+
+  go(screen) {
+    return () => {
+      this.setState({ screen });
+      this.loadScreenData(screen);
+    };
+  }
   nav(id) { return this.state.screen === id ? ACT : ""; }
+
+  async loadScreenData(screen, force) {
+    if (!this.state.auth) return;
+    if (this.state.loaded[screen] && !force) return;
+    this.setState((s) => ({ loading: Object.assign({}, s.loading, { [screen]: true }) }));
+    try {
+      if (screen === "dash") {
+        const dashboard = await this.apiCall("/reports/dashboard");
+        this.setState({ dashboard });
+      } else if (screen === "estoque") {
+        const rolls = await this.apiCall("/rolls?pageSize=100");
+        this.setState({ rollsList: rolls.items });
+        if (rolls.items.length) this.selectRoll(rolls.items[0].id)();
+      } else if (screen === "pdv") {
+        const [rolls, customers] = await Promise.all([
+          this.apiCall("/rolls?pageSize=200"),
+          this.apiCall("/customers?pageSize=100")
+        ]);
+        this.setState((s) => ({
+          pdvRolls: rolls.items,
+          customers: customers.items,
+          pdvCustomerId: s.pdvCustomerId || (customers.items[0] && customers.items[0].id) || null
+        }));
+      } else if (screen === "pedidos") {
+        const [orders, kpis] = await Promise.all([
+          this.apiCall("/orders?pageSize=50"),
+          this.apiCall("/orders/kpis")
+        ]);
+        this.setState({ orders: orders.items, orderKpis: kpis });
+      } else if (screen === "clientes") {
+        const customers = await this.apiCall("/customers?pageSize=100");
+        this.setState((s) => ({ customers: customers.items }));
+        if (customers.items.length) this.selectCustomer(customers.items[0].id)();
+      } else if (screen === "import") {
+        const [lots, suppliers] = await Promise.all([
+          this.apiCall("/import-lots?pageSize=50"),
+          this.apiCall("/suppliers?pageSize=50")
+        ]);
+        this.setState({ importLots: lots.items, suppliers: suppliers.items });
+      } else if (screen === "fin") {
+        const [titles, aging] = await Promise.all([
+          this.apiCall("/financial/titles?pageSize=100"),
+          this.apiCall("/financial/titles/aging")
+        ]);
+        this.setState({ titles: titles.items, aging });
+      } else if (screen === "fiscal") {
+        const notes = await this.apiCall("/fiscal/notes?pageSize=100");
+        this.setState({ notes: notes.items });
+      } else if (screen === "rel") {
+        const margins = await this.apiCall("/reports/margins");
+        this.setState({ margins });
+      } else if (screen === "mobile") {
+        const queue = await this.apiCall("/warehouse/conferences/queue");
+        this.setState({ warehouseQueue: queue });
+      }
+      this.setState((s) => ({ loaded: Object.assign({}, s.loaded, { [screen]: true }) }));
+    } catch (e) {
+      this.setState((s) => ({ err: Object.assign({}, s.err, { [screen]: (e && e.message) || "Erro ao carregar." }) }));
+    } finally {
+      this.setState((s) => ({ loading: Object.assign({}, s.loading, { [screen]: false }) }));
+    }
+  }
+
+  selectRoll(id) {
+    return async () => {
+      this.setState({ selectedRollId: id, rollDetail: null });
+      try {
+        const detail = await this.apiCall("/rolls/" + id);
+        this.setState({ rollDetail: detail });
+      } catch (e) {}
+    };
+  }
+
+  selectCustomer(id) {
+    return async () => {
+      this.setState({ selectedCustomerId: id, customerDetail: null });
+      try {
+        const detail = await this.apiCall("/customers/" + id);
+        this.setState({ customerDetail: detail });
+      } catch (e) {}
+    };
+  }
+
+  cyclePdvCliente() {
+    return () => this.setState((s) => {
+      if (!s.customers.length) return null;
+      const idx = s.customers.findIndex((c) => c.id === s.pdvCustomerId);
+      const next = s.customers[(idx + 1) % s.customers.length];
+      return { pdvCustomerId: next.id };
+    });
+  }
+
+  add(item) {
+    return () => this.setState((s) => {
+      const i = s.cart.findIndex((c) => c.articleId === item.articleId && c.cor === item.cor);
+      if (i > -1) {
+        const cart = s.cart.slice();
+        cart[i] = Object.assign({}, cart[i], { q: cart[i].q + 20 });
+        return { cart };
+      }
+      return { cart: s.cart.concat([{ nome: item.nome, cor: item.cor, articleId: item.articleId, q: 20, p: item.p }]) };
+    });
+  }
+
+  finalizarPedido() {
+    return async () => {
+      const s = this.state;
+      if (!s.cart.length) { this.setState({ checkoutError: "Adicione ao menos um item ao carrinho." }); return; }
+      if (!s.pdvCustomerId) { this.setState({ checkoutError: "Selecione um cliente." }); return; }
+      this.setState({ checkoutLoading: true, checkoutError: "" });
+      const metros = s.cart.reduce((t, i) => t + i.q, 0);
+      const bruto = s.cart.reduce((t, i) => t + i.q * i.p, 0);
+      const desc = metros >= 200 ? bruto * 0.05 : 0;
+      try {
+        const order = await this.apiCall("/orders", {
+          method: "POST",
+          body: JSON.stringify({
+            customerId: s.pdvCustomerId,
+            channel: "COUNTER",
+            paymentMethod: s.pgto,
+            immediateCut: true,
+            discount: Number(desc.toFixed(2)),
+            items: s.cart.map((i) => ({ articleId: i.articleId, color: i.cor, meters: i.q, unitPrice: i.p }))
+          })
+        });
+        this.setState({ cart: [], checkoutLoading: false, checkoutError: "✓ Pedido " + order.code + " criado com sucesso." });
+        this.loadScreenData("pdv", true);
+        this.loadScreenData("pedidos", true);
+      } catch (e) {
+        this.setState({ checkoutLoading: false, checkoutError: (e && e.message) || "Falha ao criar pedido." });
+      }
+    };
+  }
+
+  async perguntar(texto) {
+    const q = (texto || "").trim();
+    if (!q) return;
+    this.setState((s) => ({
+      draft: "",
+      digitando: true,
+      msgs: s.msgs.concat([{ role: "user", texto: q, hora: this.hora() }])
+    }));
+    try {
+      const reply = await this.apiCall("/agent/ask", { method: "POST", body: JSON.stringify({ message: q }) });
+      this.setState((s) => ({
+        digitando: false,
+        msgs: s.msgs.concat([{
+          role: "bot", texto: reply.text,
+          linhas: (reply.lines || []).map((l) => ({ k: l.label, v: l.value, cor: "var(--fg)" })),
+          acao: reply.action, waLink: reply.whatsappLink,
+          hora: this.hora()
+        }])
+      }));
+    } catch (e) {
+      this.setState((s) => ({
+        digitando: false,
+        msgs: s.msgs.concat([{ role: "bot", texto: (e && e.message) || "Não consegui consultar agora.", linhas: [], hora: this.hora() }])
+      }));
+    }
+  }
 
   hora() {
     const d = new Date();
     return [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, "0")).join(":");
   }
 
-  perguntar(texto) {
-    const q = (texto || "").trim();
-    if (!q) return;
-    const low = q.toLowerCase();
-    const hit = RESPOSTAS.find((r) => r.k.some((k) => low.indexOf(k) > -1)) || FALLBACK;
-    this.setState((s) => ({
-      draft: "",
-      digitando: true,
-      msgs: s.msgs.concat([{ role: "user", texto: q, hora: this.hora() }])
-    }));
-    clearTimeout(this._t);
-    this._t = setTimeout(() => {
-      this.setState((s) => ({
-        digitando: false,
-        msgs: s.msgs.concat([{ role: "bot", texto: hit.texto, linhas: hit.linhas, acao: hit.acao, wa: hit.wa, hora: this.hora() }])
-      }));
-    }, 700);
+  logout() {
+    return () => {
+      clearSession();
+      this.setState({ auth: null, screen: "dash", loaded: {}, dashboard: null });
+    };
   }
 
   componentWillUnmount() { clearTimeout(this._t); }
 
-  add(a) {
-    return () => this.setState((s) => {
-      const i = s.cart.findIndex((c) => c.nome === a.nome && c.cor === a.cor);
-      if (i > -1) {
-        const cart = s.cart.slice();
-        cart[i] = Object.assign({}, cart[i], { q: cart[i].q + 20 });
-        return { cart };
+  buildPdvCatalog(rolls) {
+    const map = new Map();
+    for (const r of rolls) {
+      if (Number(r.balanceMeters) <= 0) continue;
+      const key = r.articleId + "|" + r.color;
+      if (!map.has(key)) {
+        map.set(key, { articleId: r.articleId, nome: r.article.name, cor: r.color, comp: r.article.composition || "—", p: Number(r.article.salePerMeter), disp: 0 });
       }
-      return { cart: s.cart.concat([{ nome: a.nome, cor: a.cor, q: 20, p: a.p }]) };
-    });
+      map.get(key).disp += Number(r.balanceMeters);
+    }
+    return Array.from(map.values()).map((item) => ({
+      nome: item.nome, cor: item.cor, comp: item.comp, p: item.p, articleId: item.articleId,
+      preco: BRL(item.p) + "/m",
+      disp: fmt1(item.disp) + " m",
+      swatch: colorSwatch(item.cor),
+      add: this.add(item)
+    }));
   }
 
   renderVals() {
     const s = this.state;
+    const auth = s.auth;
+
+    if (!auth) {
+      return {
+        showLogin: !s.booting,
+        showApp: false,
+        loginEmail: s.loginEmail,
+        loginPassword: s.loginPassword,
+        loginError: s.loginError,
+        loginBtnLabel: s.loggingIn ? "ENTRANDO..." : "ENTRAR",
+        onLoginEmail: (e) => this.setState({ loginEmail: e.target.value }),
+        onLoginPassword: (e) => this.setState({ loginPassword: e.target.value }),
+        onLoginKey: (e) => { if (e.key === "Enter") this.submitLogin(); },
+        doLogin: () => this.submitLogin()
+      };
+    }
+
     const cart = s.cart;
     const metros = cart.reduce((t, i) => t + i.q, 0);
     const bruto = cart.reduce((t, i) => t + i.q * i.p, 0);
     const desc = metros >= 200 ? bruto * 0.05 : 0;
     const crumb = {
-      dash: "PAINEL · AGOSTO 2026", estoque: "ESTOQUE · ROLOS", pdv: "BALCÃO · CORTE",
+      dash: "PAINEL · VISÃO GERAL", estoque: "ESTOQUE · ROLOS", pdv: "BALCÃO · CORTE",
       pedidos: "PEDIDOS · MÊS CORRENTE", clientes: "CLIENTES · CONFECÇÕES", import: "IMPORTAÇÃO · LOTES",
       fin: "FINANCEIRO · A RECEBER", fiscal: "FISCAL · NF-e", rel: "RELATÓRIOS · MARGEM", mobile: "CAMPO · APP DEPÓSITO"
     }[s.screen];
 
-    const rolo = ROLOS.find((r) => r.id === s.rolo) || ROLOS[0];
-
     const aberto = s.agente && this.props.agenteAberto !== false;
+    const now = new Date();
+
+    // ---- dashboard ----
+    const dash = s.dashboard;
+    const kpis = dash ? dash.kpis : null;
+    const semanas = dash && dash.weeklyRevenue.length
+      ? (() => {
+          const maxV = Math.max(...dash.weeklyRevenue.map((w) => w.value), 1);
+          return dash.weeklyRevenue.map((w) => ({ lbl: "S" + w.week, v: fmt0(w.value / 1000), h: Math.round((w.value / maxV) * 126) + "px" }));
+        })()
+      : [];
+    const topArtigos = dash
+      ? (() => {
+          const maxV = Math.max(...dash.topArticles.map((a) => a.value), 1);
+          return dash.topArticles.map((a) => ({
+            nome: a.article, valor: money0(a.value), pct: Math.round((a.value / maxV) * 100) + "%",
+            metros: fmt0(a.meters) + " M", margem: a.marginPct.toFixed(0) + "%"
+          }));
+        })()
+      : [];
+    const topClientes = dash
+      ? dash.topCustomers.map((c) => ({ nome: c.customer, bairro: c.neighborhood || "—", pedidos: c.orders + " pedidos", valor: money0(c.value) }))
+      : [];
+    const chegadas = dash
+      ? dash.upcomingLots.map((l) => ({ id: l.code, eta: fmtDateShort(l.eta), artigos: l.articlesDesc, fornecedor: l.supplier.name, status: (IMPORT_STATUS[l.status] || [l.status])[0] }))
+      : [];
+    const alertas = [];
+    if (dash) {
+      for (const r of dash.alerts.criticalRolls.slice(0, 3)) {
+        alertas.push({ cor: "#FF5C7A", texto: r.article.name + " " + r.color + " com " + fmt1(r.balanceMeters) + " m — nível crítico", ref: r.code + " · " + r.warehouse });
+      }
+      for (const t of dash.alerts.overdueTitles.slice(0, 3)) {
+        const days = Math.max(0, Math.floor((now.getTime() - new Date(t.dueDate).getTime()) / 86400000));
+        alertas.push({ cor: "#FF5C7A", texto: t.customer.name + " com " + money0(t.value) + " vencidos há " + days + " dias", ref: t.code });
+      }
+      if (dash.alerts.ordersAwaitingCut > 0) {
+        alertas.push({ cor: "#FFB020", texto: dash.alerts.ordersAwaitingCut + " pedido(s) aguardando corte", ref: "Ver pedidos" });
+      }
+    }
+
+    // ---- estoque ----
+    const rolos = s.rollsList.map((r) => {
+      const [label, st] = ROLL_STATUS[r.status] || [r.status, "neutral"];
+      return {
+        id: r.code, artigo: r.article.name, cor: r.color, comp: r.article.composition || "—",
+        saldo: fmt1(r.balanceMeters) + " m", larg: r.article.widthMeters ? fmt2(r.article.widthMeters) : "—",
+        peso: r.weightKg ? fmt1(r.weightKg) + " kg" : "—", local: r.warehouse + (r.location ? " · " + r.location : ""),
+        status: label, st, statusStyle: S[st],
+        custo: BRL(r.landedCost || r.article.costPerMeter), venda: BRL(r.article.salePerMeter),
+        rowStyle: r.id === s.selectedRollId ? "background:rgba(255,176,32,0.06);box-shadow:inset 2px 0 0 #FFB020;" : "",
+        click: this.selectRoll(r.id)
+      };
+    });
+    const rd = s.rollDetail;
+    const roloDetalhe = rd
+      ? {
+          id: rd.code, artigo: rd.article.name, cor: rd.color, comp: rd.article.composition || "—",
+          saldo: fmt1(rd.balanceMeters) + " m", peso: rd.weightKg ? fmt1(rd.weightKg) + " kg" : "—",
+          custo: BRL(rd.landedCost || rd.article.costPerMeter), venda: BRL(rd.article.salePerMeter),
+          cortes: (rd.movements || []).slice(0, 8).map((m) => ({
+            cliente: m.order ? m.order.customer.name : (m.reason || "Ajuste"),
+            data: fmtDateShort(m.createdAt),
+            pedido: m.order ? m.order.code : (m.reason || "—"),
+            metros: (m.type === "OUT" ? "-" : "+") + fmt1(m.meters) + " m"
+          }))
+        }
+      : { id: "—", artigo: "Selecione um rolo", cor: "", comp: "", saldo: "—", peso: "—", custo: "—", venda: "—", cortes: [] };
+    const totalRolos = s.rollsList.length;
+    const totalMetrosEstoque = s.rollsList.reduce((t, r) => t + Number(r.balanceMeters), 0);
+
+    // ---- pdv ----
+    const pdvCatalog = this.buildPdvCatalog(s.pdvRolls);
+    const pdvCliente = s.customers.find((c) => c.id === s.pdvCustomerId);
+    const pdvLimiteDisp = pdvCliente ? Number(pdvCliente.creditLimit) - Number(pdvCliente.openBalance) : 0;
+
+    // ---- pedidos ----
+    const pedidos = s.orders.map((o) => {
+      const [label, st] = ORDER_STAGE[o.stage] || [o.stage, "neutral"];
+      return {
+        id: o.code, cliente: o.customer.name, data: fmtDateShort(o.createdAt), vendedor: o.seller.name,
+        artigos: String(o.items.length), metros: fmt0(o.totalMeters) + " m", valor: money0(o.totalValue),
+        pagamento: PAYMENT_LABEL[o.paymentMethod] || o.paymentMethod, etapa: label, st, etapaStyle: S[st]
+      };
+    });
+
+    // ---- clientes ----
+    const clientes = s.customers.map((c) => {
+      const openBalance = Number(c.openBalance);
+      const situacao = openBalance > Number(c.creditLimit) ? "NO LIMITE" : openBalance > 0 ? "EM ABERTO" : "EM DIA";
+      const st = situacao === "NO LIMITE" ? "warn" : "ok";
+      return {
+        id: c.id, nome: c.name, cnpj: c.cnpj || "—", bairro: c.neighborhood || "—",
+        mix: (c.orderCount || 0) + " pedidos", limite: money0(c.creditLimit), aberto: money0(openBalance),
+        situacao, st, sitStyle: S[st], click: this.selectCustomer(c.id)
+      };
+    });
+    const cd = s.customerDetail;
+    const selCliente = cd
+      ? {
+          codigo: "CLI-" + cd.id.slice(-4).toUpperCase(),
+          nome: cd.name,
+          cnpjBairro: (cd.cnpj || "—") + " · " + (cd.neighborhood || "—"),
+          desde: "Cliente desde " + fmtMonthYear(cd.customerSince) + " · " + cd.stats.orderCount + " pedidos",
+          mixCount: cd.stats.habitualMix.length + " ARTIGOS",
+          mixNomes: cd.stats.habitualMix.length ? cd.stats.habitualMix.map((m) => m.article).join(", ") : "Sem histórico ainda",
+          telefone: cd.phone || "Sem telefone cadastrado"
+        }
+      : { codigo: "—", nome: "Selecione um cliente", cnpjBairro: "—", desde: "—", mixCount: "0", mixNomes: "—", telefone: "—" };
+    const fichaLinhas = cd
+      ? [
+          { label: "PEDIDOS ATIVOS", valor: String(cd.stats.orderCount) },
+          { label: "EM ABERTO", valor: money0(cd.stats.openBalance) },
+          { label: "LIMITE DISPONÍVEL", valor: money0(cd.stats.availableCredit) },
+          { label: "ÚLTIMA COMPRA", valor: cd.recentOrders[0] ? fmtDateShort(cd.recentOrders[0].createdAt) + " · " + cd.recentOrders[0].code : "—" }
+        ]
+      : [];
+    const waCliente = cd ? WA(cd.phone, "Olá, aqui é da tecidOps. Passando para saber o que você vai precisar essa semana.") : null;
+
+    // ---- import ----
+    const lotes = s.importLots.map((l) => {
+      const [label, st] = IMPORT_STATUS[l.status] || [l.status, "neutral"];
+      return {
+        id: l.code, status: label, st, statusStyle: S[st], artigos: l.articlesDesc, fornecedor: l.supplier.name,
+        pais: l.country || "—", container: l.container || "—", eta: fmtDateShort(l.eta),
+        metros: fmt0(l.meters) + " m", fob: usd0(l.fobUsd), cambio: "R$ " + fmt2(l.exchangeRate), custo: BRL(l.costPerMeter)
+      };
+    });
+    const fornecedores = s.suppliers.map((f) => ({ nome: f.name, pais: f.country || "—", artigos: "—", lead: (f.leadTimeDays || "—") + " D", volume: "—" }));
+
+    // ---- financeiro ----
+    const titulos = s.titles.map((t) => {
+      const [label, st] = TITLE_STATUS[t.status] || [t.status, "neutral"];
+      return {
+        id: t.code, cliente: t.customer.name, pedido: t.order ? t.order.code : "—", valor: money0(t.value),
+        venc: fmtDateShort(t.dueDate), forma: PAYMENT_LABEL[t.paymentMethod] || t.paymentMethod,
+        status: label, st, statusStyle: S[st], waCor: st === "bad" ? "#FF9AAE" : st === "warn" ? "#FFC969" : "var(--fg-tertiary)",
+        wa: WA(t.customer.phone, "Olá " + t.customer.name + ", o título " + t.code + " de " + money0(t.value) + " venceu em " + fmtDateShort(t.dueDate) + ". Pode acertar hoje?")
+      };
+    });
+    const caderneta = s.titles
+      .filter((t) => t.isCaderneta && (t.status === "OPEN" || t.status === "OVERDUE"))
+      .map((t) => {
+        const dias = Math.max(0, Math.floor((now.getTime() - new Date(t.createdAt).getTime()) / 86400000));
+        return {
+          nome: t.customer.name, dias: "ABERTO HÁ " + dias + " DIAS", valor: money0(t.value),
+          cor: t.status === "OVERDUE" ? "#FF9AAE" : "var(--fg)",
+          wa: WA(t.customer.phone, "Olá " + t.customer.name + ", ficou " + money0(t.value) + " na caderneta. Consegue passar hoje para acertar?")
+        };
+      });
+    const cadernetaTotalRaw = s.titles
+      .filter((t) => t.isCaderneta && (t.status === "OPEN" || t.status === "OVERDUE"))
+      .reduce((t, ti) => t + Number(ti.value), 0);
+    const cadernetaTotal = money0(cadernetaTotalRaw);
+    const agingData = s.aging
+      ? [
+          { label: "A VENCER", valor: money0(s.aging.buckets.naoVencido), cor: "#3A3E43" },
+          { label: "0–30", valor: money0(s.aging.buckets.d1a30), cor: "#FFB020" },
+          { label: "31–60", valor: money0(s.aging.buckets.d31a60), cor: "#FFB020" },
+          { label: "61–90", valor: money0(s.aging.buckets.d61a90), cor: "#FF5C7A" },
+          { label: "+90", valor: money0(s.aging.buckets.d90mais), cor: "#FF5C7A" }
+        ]
+      : [];
+    const agingMax = s.aging ? Math.max(...Object.values(s.aging.buckets), 1) : 1;
+    const aging = agingData.map((a, idx) => {
+      const raw = s.aging ? Object.values(s.aging.buckets)[idx] : 0;
+      return Object.assign({}, a, { h: Math.max(4, Math.round((raw / agingMax) * 108)) + "px" });
+    });
+
+    // ---- fiscal ----
+    const notas = s.notes.map((n) => {
+      const [label, st] = NOTE_STATUS[n.status] || [n.status, "neutral"];
+      return {
+        numero: n.number, cliente: n.order.customer.name, data: fmtDateShort(n.issuedAt), pedido: n.order.code,
+        cfop: n.cfop, valor: money0(n.value), icms: money0(n.icms), status: label, st, statusStyle: S[st]
+      };
+    });
+    const fiscalCounts = { AUTHORIZED: 0, REJECTED: 0, CANCELLED: 0 };
+    let icmsSum = 0;
+    for (const n of s.notes) {
+      if (fiscalCounts[n.status] !== undefined) fiscalCounts[n.status]++;
+      if (n.status === "AUTHORIZED") icmsSum += Number(n.icms);
+    }
+    const fiscalKpis = [
+      { label: "AUTORIZADAS", valor: String(fiscalCounts.AUTHORIZED), nota: s.notes.length + " NOTAS NO TOTAL" },
+      { label: "REJEITADAS", valor: String(fiscalCounts.REJECTED), nota: "REVISAR NCM/CFOP" },
+      { label: "CANCELADAS", valor: String(fiscalCounts.CANCELLED), nota: "DENTRO DO PRAZO" },
+      { label: "ICMS APURADO", valor: money0(icmsSum), nota: "SOBRE NOTAS AUTORIZADAS" }
+    ];
+
+    // ---- relatorios ----
+    const margens = s.margins.map((m) => ({
+      artigo: m.article, comp: "—", custo: BRL(m.costPerMeter), venda: BRL(m.salePerMeter),
+      margem: m.marginPct.toFixed(0) + "%", cor: m.marginPct >= 40 ? "#7CEBC4" : m.marginPct < 30 ? "#FF9AAE" : "var(--fg)",
+      giro: m.turnover != null ? fmt1(m.turnover) + "×" : "—", cobertura: m.coverageDays != null ? m.coverageDays + " dias" : "—"
+    }));
+
+    // ---- mobile ----
+    const mobileFila = s.warehouseQueue.map((c) => {
+      const st = c.status === "CONFIRMED" ? "ok" : c.status === "DIVERGENT" ? "bad" : "warn";
+      return { id: c.roll.code, artigo: c.roll.article.name + " " + c.roll.color, status: c.status, st, style: S[st] };
+    });
+
+    const revenueGrowth = kpis && kpis.revenueGrowthPct != null;
+    const overduePct = kpis && kpis.openReceivable > 0 ? (kpis.overdueReceivable / kpis.openReceivable) * 100 : 0;
 
     return {
+      showLogin: false,
+      showApp: true,
       crumb,
       mostrarAlertas: this.props.mostrarAlertas !== false,
+
+      userName: auth.user.name,
+      userInitials: auth.user.name.split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase(),
+      userRoleLabel: ROLE_LABEL[auth.user.role] || auth.user.role,
+      logout: this.logout(),
+
+      dashPeriodo: MESES[now.getMonth()] + "/" + now.getFullYear(),
 
       agenteAberto: aberto,
       contentInset: aberto ? "padding-right:416px;" : "padding-right:24px;",
       agenteBtnStyle: aberto ? "background:rgba(255,176,32,0.10);border:1px solid rgba(255,176,32,0.42);color:#FFC969;" : "color:var(--fg-secondary);",
-      agenteStatus: s.digitando ? "CONSULTANDO" : "PRONTO · BASE 14:32",
+      agenteStatus: s.digitando ? "CONSULTANDO" : "PRONTO",
       toggleAgente: () => this.setState({ agente: !s.agente }),
       digitando: s.digitando,
       draft: s.draft,
@@ -1169,16 +1600,15 @@ class Component extends DCLogic {
       onKey: (e) => { if (e.key === "Enter") this.perguntar(this.state.draft); },
       enviar: () => this.perguntar(this.state.draft),
       atalhos: [
-        { label: "SALDO DE MALHA PV", q: "saldo de malha pv" },
+        { label: "SALDO DE ESTOQUE", q: "saldo de estoque" },
         { label: "QUEM ESTÁ EM ATRASO", q: "quem está em atraso" },
         { label: "PEDIDOS P/ CORTAR", q: "pedidos para cortar" },
-        { label: "PRÓXIMO LOTE", q: "próximo lote de importação" },
-        { label: "O QUE REPOR", q: "o que repor por margem e giro" }
+        { label: "PRÓXIMO LOTE", q: "próximo lote de importação" }
       ].map((a) => ({ label: a.label, click: () => this.perguntar(a.q) })),
       mensagens: s.msgs.map((m) => ({
         texto: m.texto,
         hora: m.hora,
-        autor: m.role === "bot" ? "EDOPS · AGENTE" : "VOCÊ",
+        autor: m.role === "bot" ? "AGENTE OPS" : "VOCÊ",
         wrap: m.role === "bot" ? "align-items:flex-start;" : "align-items:flex-end;",
         bubble: m.role === "bot"
           ? "background:var(--ink-3);border:1px solid var(--border-default);"
@@ -1187,12 +1617,11 @@ class Component extends DCLogic {
         linhas: m.linhas || [],
         temAcao: !!m.acao,
         acao: m.acao || "",
-        temWa: !!m.wa,
-        waHref: m.wa ? WA(FONES[m.wa.nome] || "5511900000000", m.wa.msg) : "#",
-        waFone: m.wa ? m.wa.nome.toUpperCase() : "",
-        waPreview: m.wa ? m.wa.msg : ""
+        temWa: !!m.waLink,
+        waHref: m.waLink || "#",
+        waFone: m.waLink ? "CONTATO" : "",
+        waPreview: m.waLink ? "Abrir conversa" : ""
       })),
-      waCliente: WA(FONES["Aurora Confecções"], "Olá Márcia, aqui é da tecidOps no Brás. Passando para saber o que você vai precisar essa semana."),
 
       unidadeLabel: (this.props.unidadePadrao || "Metro") === "Quilo" ? "QUILO" : "METRO LINEAR",
 
@@ -1208,186 +1637,95 @@ class Component extends DCLogic {
       navPedidos: this.nav("pedidos"), navClientes: this.nav("clientes"), navImport: this.nav("import"),
       navFin: this.nav("fin"), navFiscal: this.nav("fiscal"), navRel: this.nav("rel"), navMobile: this.nav("mobile"),
 
-      semanas: [
-        { lbl: "S27", v: "94", h: "78px" }, { lbl: "S28", v: "108", h: "92px" },
-        { lbl: "S29", v: "86", h: "70px" }, { lbl: "S30", v: "119", h: "102px" },
-        { lbl: "S31", v: "132", h: "116px" }, { lbl: "S32", v: "104", h: "88px" },
-        { lbl: "S33", v: "141", h: "126px" }, { lbl: "S34", v: "68", h: "54px" }
-      ],
-      topArtigos: [
-        { nome: "Malha PV 30.1", valor: "R$ 148.900", pct: "100%", metros: "11.420 M", margem: "39%" },
-        { nome: "Crepe Amanda", valor: "R$ 96.200", pct: "65%", metros: "8.910 M", margem: "46%" },
-        { nome: "Suplex Fitness", valor: "R$ 71.400", pct: "48%", metros: "3.180 M", margem: "38%" },
-        { nome: "Tricoline Fio Tinto", valor: "R$ 52.800", pct: "35%", metros: "2.640 M", margem: "44%" },
-        { nome: "Sarja com Elastano", valor: "R$ 29.100", pct: "20%", metros: "1.140 M", margem: "40%" }
-      ],
-      topClientes: [
-        { nome: "Aurora Confecções", bairro: "Brás", pedidos: "9 pedidos", valor: "R$ 68.400" },
-        { nome: "Malharia Dinâmica", bairro: "Pari", pedidos: "7 pedidos", valor: "R$ 51.200" },
-        { nome: "Vitrine Kids", bairro: "Bom Retiro", pedidos: "6 pedidos", valor: "R$ 38.900" },
-        { nome: "Studio Bianca", bairro: "Mooca", pedidos: "4 pedidos", valor: "R$ 24.100" }
-      ],
-      chegadas: [
-        { id: "LT-2618", eta: "02/09", artigos: "Malha PV 30.1 · 4 cores", fornecedor: "Shaoxing Yicheng", status: "EM TRÂNSITO" },
-        { id: "LT-2621", eta: "14/09", artigos: "Suplex Fitness · 3 cores", fornecedor: "Hangzhou Wenhui", status: "EMBARCADO" },
-        { id: "LT-2624", eta: "28/09", artigos: "Viscose Lisa · 5 cores", fornecedor: "Surat Textiles", status: "PRODUÇÃO" }
-      ],
-      alertas: [
-        { cor: "#FF5C7A", texto: "Linho Misto Cru com 4,2 m — abaixo do mínimo de 60 m", ref: "R-4356 · DEP-A P01", },
-        { cor: "#FF5C7A", texto: "Rei do Jeans com R$ 6.180 vencidos há 22 dias", ref: "TIT-1188 · BLOQUEAR CRÉDITO" },
-        { cor: "#FFB020", texto: "LT-2618 chega em 02/09 e não tem endereçamento definido", ref: "1×40HQ · 8.400 m" },
-        { cor: "#FFB020", texto: "9 pedidos aguardando corte no depósito B", ref: "1.840 m pendentes" }
-      ],
+      kpiRevenue: kpis ? money0(kpis.revenue) : "—",
+      kpiRevenueColor: revenueGrowth && kpis.revenueGrowthPct >= 0 ? "var(--c-mint)" : "#FF9AAE",
+      kpiRevenueGrowth: revenueGrowth ? ((kpis.revenueGrowthPct >= 0 ? "↗ " : "↘ ") + Math.abs(kpis.revenueGrowthPct).toFixed(1) + "% vs mês anterior") : "sem comparativo",
+      kpiMeters: kpis ? fmt0(kpis.metersSold) + " m" : "—",
+      kpiMetersPerOrder: kpis ? fmt1(kpis.itemsPerOrder) + " m por pedido em média" : "—",
+      kpiTicket: kpis ? money0(kpis.avgTicket) : "—",
+      kpiOrdersCount: "no mês corrente",
+      kpiReceivable: kpis ? money0(kpis.openReceivable) : "—",
+      kpiTitlesCount: kpis ? kpis.openTitlesCount + " títulos abertos" : "—",
+      kpiOverdue: kpis ? money0(kpis.overdueReceivable) : "—",
+      kpiOverduePct: kpis ? overduePct.toFixed(1) + "% da carteira" : "—",
 
-      filtros: ["TODOS", "MALHA", "PLANO", "RETALHO ≤ 15M", "RESERVADO", "DEP-A", "DEP-B"].map((f) => ({
+      semanas,
+      topArtigos,
+      topClientes,
+      chegadas,
+      alertas,
+
+      estoqueHeaderTexto: totalRolos + " rolos · " + fmt0(totalMetrosEstoque) + " m em estoque",
+      filtros: ["TODOS", "INTEIRO", "RESERVADO", "RETALHO", "CRÍTICO"].map((f) => ({
         label: f, style: s.filtro === f ? CHIP_ON : "", click: () => this.setState({ filtro: f })
       })),
-      rolos: ROLOS.map((r) => Object.assign({}, r, {
-        statusStyle: S[r.st],
-        rowStyle: r.id === s.rolo ? "background:rgba(255,176,32,0.06);box-shadow:inset 2px 0 0 #FFB020;" : "",
-        click: () => this.setState({ rolo: r.id })
-      })),
-      rolo: Object.assign({}, rolo, { cortes: CORTES[rolo.id] || CORTES["R-4412"] }),
+      rolos: s.filtro === "TODOS" ? rolos : rolos.filter((r) => r.status === s.filtro || (s.filtro === "RETALHO" && r.status === "RETALHO")),
+      rolo: roloDetalhe,
 
-      artigos: ARTIGOS.map((a) => Object.assign({}, a, { add: this.add(a) })),
+      artigos: pdvCatalog,
+      pdvClienteNome: pdvCliente ? pdvCliente.name : "Selecione um cliente",
+      pdvVendedorNome: auth.user.name,
+      pdvLimiteTexto: pdvCliente ? (money0(pdvLimiteDisp) + " de " + money0(pdvCliente.creditLimit)) : "—",
+      cyclePdvCliente: this.cyclePdvCliente(),
+      finalizarPedido: this.finalizarPedido(),
+      checkoutLabel: s.checkoutLoading ? "ENVIANDO..." : "FECHAR E EMITIR NF-e",
+      checkoutError: s.checkoutError,
       cart: cart.map((i, idx) => ({
         nome: i.nome, cor: i.cor, qtd: i.q + " m", preco: BRL(i.p), total: BRL(i.q * i.p),
         remove: () => this.setState((st) => ({ cart: st.cart.filter((_, k) => k !== idx) }))
       })),
       cartVazio: cart.length === 0,
       cartCount: cart.length + " ITENS",
-      cartMetros: metros.toLocaleString("pt-BR") + " m",
+      cartMetros: fmt0(metros) + " m",
       cartDesconto: desc > 0 ? "− " + BRL(desc) : "—",
       cartTotal: BRL(bruto - desc),
-      pagamentos: ["PIX À VISTA", "BOLETO 28D", "BOLETO 30/60", "CARTÃO 3×"].map((p) => ({
-        label: p, style: s.pgto === p ? CHIP_ON : "", click: () => this.setState({ pgto: p })
-      })),
+      pagamentos: [
+        { label: "PIX", value: "PIX" }, { label: "DINHEIRO", value: "CASH" },
+        { label: "CARTÃO", value: "CARD" }, { label: "BOLETO", value: "BOLETO" }
+      ].map((p) => ({ label: p.label, style: s.pgto === p.value ? CHIP_ON : "", click: () => this.setState({ pgto: p.value }) })),
 
-      pedidoKpis: [
-        { label: "EM ABERTO", valor: "22" }, { label: "AGUARDANDO CORTE", valor: "9" },
-        { label: "PRONTOS P/ RETIRAR", valor: "6" }, { label: "VALOR EM CURSO", valor: "R$ 84.120" }
-      ],
-      pedidos: [
-        { id: "PED-2418", cliente: "Aurora Confecções", data: "22/08", vendedor: "Wilson", artigos: "4", metros: "620 m", valor: "R$ 14.880", pagamento: "BOLETO 28D", etapa: "EM CORTE", st: "warn" },
-        { id: "PED-2417", cliente: "Malharia Dinâmica", data: "22/08", vendedor: "Cida", artigos: "3", metros: "480 m", valor: "R$ 11.240", pagamento: "PIX À VISTA", etapa: "FATURADO", st: "ok" },
-        { id: "PED-2415", cliente: "Vitrine Kids", data: "21/08", vendedor: "Wilson", artigos: "5", metros: "340 m", valor: "R$ 8.960", pagamento: "BOLETO 30/60", etapa: "PRONTO", st: "ok" },
-        { id: "PED-2412", cliente: "JS Modas", data: "21/08", vendedor: "Cida", artigos: "2", metros: "190 m", valor: "R$ 4.180", pagamento: "CADERNETA", etapa: "EM CORTE", st: "warn" },
-        { id: "PED-2409", cliente: "Atacado Nova Era", data: "20/08", vendedor: "Rogério", artigos: "5", metros: "1.240 m", valor: "R$ 31.400", pagamento: "BOLETO 30/60", etapa: "FATURADO", st: "ok" },
-        { id: "PED-2404", cliente: "Studio Bianca", data: "19/08", vendedor: "Wilson", artigos: "3", metros: "260 m", valor: "R$ 6.740", pagamento: "CARTÃO 3×", etapa: "ENTREGUE", st: "neutral" },
-        { id: "PED-2402", cliente: "Malharia Dinâmica", data: "19/08", vendedor: "Cida", artigos: "4", metros: "510 m", valor: "R$ 12.180", pagamento: "BOLETO 28D", etapa: "ENTREGUE", st: "neutral" },
-        { id: "PED-2398", cliente: "Rei do Jeans", data: "18/08", vendedor: "Wilson", artigos: "2", metros: "420 m", valor: "R$ 9.640", pagamento: "BOLETO 28D", etapa: "BLOQUEADO", st: "bad" },
-        { id: "PED-2377", cliente: "JS Modas", data: "14/08", vendedor: "Rogério", artigos: "3", metros: "280 m", valor: "R$ 7.020", pagamento: "PIX À VISTA", etapa: "ENTREGUE", st: "neutral" }
-      ].map((p) => Object.assign({}, p, { etapaStyle: S[p.st] })),
+      pedidosHeaderTexto: s.orderKpis ? (s.orderKpis.ordersThisMonth + " pedidos no mês · " + s.orderKpis.awaitingCut + " aguardando corte") : "Pedidos",
+      pedidoKpis: s.orderKpis
+        ? [
+            { label: "PEDIDOS NO MÊS", valor: String(s.orderKpis.ordersThisMonth) },
+            { label: "AGUARDANDO CORTE", valor: String(s.orderKpis.awaitingCut) },
+            { label: "METROS NO MÊS", valor: fmt0(s.orderKpis.metersThisMonth) + " m" },
+            { label: "VALOR NO MÊS", valor: money0(s.orderKpis.valueThisMonth) }
+          ]
+        : [],
+      pedidos,
 
-      clientes: [
-        { nome: "Aurora Confecções", cnpj: "12.480.331", bairro: "Brás", mix: "4 artigos", limite: "R$ 40.000", aberto: "R$ 17.600", situacao: "EM DIA", st: "ok" },
-        { nome: "Malharia Dinâmica", cnpj: "08.117.902", bairro: "Pari", mix: "5 artigos", limite: "R$ 35.000", aberto: "R$ 12.180", situacao: "EM DIA", st: "ok" },
-        { nome: "Vitrine Kids", cnpj: "21.905.044", bairro: "Bom Retiro", mix: "5 artigos", limite: "R$ 25.000", aberto: "R$ 8.960", situacao: "EM DIA", st: "ok" },
-        { nome: "Atacado Nova Era", cnpj: "31.226.518", bairro: "Brás", mix: "5 artigos", limite: "R$ 60.000", aberto: "R$ 44.200", situacao: "NO LIMITE", st: "warn" },
-        { nome: "JS Modas", cnpj: "17.640.883", bairro: "Belenzinho", mix: "3 artigos", limite: "R$ 15.000", aberto: "R$ 4.180", situacao: "CADERNETA", st: "warn" },
-        { nome: "Studio Bianca", cnpj: "26.019.774", bairro: "Mooca", mix: "3 artigos", limite: "R$ 18.000", aberto: "R$ 2.240", situacao: "EM DIA", st: "ok" },
-        { nome: "Rei do Jeans", cnpj: "09.884.120", bairro: "Brás", mix: "2 artigos", limite: "R$ 30.000", aberto: "R$ 6.180", situacao: "ATRASO 22D", st: "bad" },
-        { nome: "Confecção Litoral", cnpj: "33.507.611", bairro: "Bom Retiro", mix: "4 artigos", limite: "R$ 22.000", aberto: "—", situacao: "INATIVO 90D", st: "neutral" }
-      ].map((c) => Object.assign({}, c, { sitStyle: S[c.st] })),
-      fichaLinhas: [
-        { label: "COMPRA MÉDIA / MÊS", valor: "R$ 22.800" },
-        { label: "METROS EM 90 DIAS", valor: "4.180 m" },
-        { label: "PRAZO MÉDIO DE PAGAMENTO", valor: "26 dias" },
-        { label: "LIMITE DISPONÍVEL", valor: "R$ 22.400" },
-        { label: "ÚLTIMA COMPRA", valor: "22/08 · PED-2418" }
-      ],
+      clientesHeaderTexto: s.customers.length + " confecções cadastradas",
+      clientes,
+      selCliente,
+      fichaLinhas,
+      waCliente,
 
-      lotes: [
-        { id: "LT-2618", status: "EM TRÂNSITO", st: "warn", artigos: "Malha PV 30.1 · Preto, Off White, Marinho, Cinza", fornecedor: "Shaoxing Yicheng", pais: "CN", container: "1×40HQ", eta: "02/09", metros: "8.400 m", fob: "US$ 24.100", cambio: "R$ 5,42", custo: "R$ 16,80" },
-        { id: "LT-2621", status: "EMBARCADO", st: "neutral", artigos: "Suplex Fitness · Marinho, Preto, Grafite", fornecedor: "Hangzhou Wenhui", pais: "CN", container: "1×20GP", eta: "14/09", metros: "3.600 m", fob: "US$ 15.800", cambio: "R$ 5,48", custo: "R$ 23,10" },
-        { id: "LT-2624", status: "PRODUÇÃO", st: "neutral", artigos: "Viscose Lisa · 5 cores", fornecedor: "Surat Textiles", pais: "IN", container: "1×40HQ", eta: "28/09", metros: "9.200 m", fob: "US$ 26.400", cambio: "—", custo: "≈ R$ 15,90" },
-        { id: "LT-2615", status: "DESEMBARAÇO", st: "bad", artigos: "Crepe Amanda · Rosé, Preto, Cru", fornecedor: "Bursa Kumaş", pais: "TR", container: "1×20GP", eta: "27/08", metros: "4.100 m", fob: "US$ 9.700", cambio: "R$ 5,36", custo: "R$ 11,40" },
-        { id: "LT-2612", status: "RECEBIDO", st: "ok", artigos: "Sarja com Elastano · Bege, Preto", fornecedor: "Shaoxing Yicheng", pais: "CN", container: "1×20GP", eta: "11/08", metros: "2.800 m", fob: "US$ 10.200", cambio: "R$ 5,31", custo: "R$ 19,60" }
-      ].map((l) => Object.assign({}, l, { statusStyle: S[l.st] })),
-      fornecedores: [
-        { nome: "Shaoxing Yicheng", pais: "CHINA", artigos: "Malha PV, Sarja", lead: "62 D", volume: "48% do volume" },
-        { nome: "Hangzhou Wenhui", pais: "CHINA", artigos: "Suplex, Poliamida", lead: "70 D", volume: "21%" },
-        { nome: "Surat Textiles", pais: "ÍNDIA", artigos: "Viscose, Rayon", lead: "78 D", volume: "18%" },
-        { nome: "Bursa Kumaş", pais: "TURQUIA", artigos: "Crepe, Linho misto", lead: "54 D", volume: "13%" }
-      ],
+      importHeaderTexto: s.importLots.filter((l) => l.status !== "ARRIVED").length + " lotes em curso",
+      lotes,
+      fornecedores,
 
-      aging: [
-        { label: "A VENCER", valor: "R$ 121.400", h: "108px", cor: "#3A3E43" },
-        { label: "0–30", valor: "R$ 54.200", h: "62px", cor: "#FFB020" },
-        { label: "31–60", valor: "R$ 26.100", h: "38px", cor: "#FFB020" },
-        { label: "61–90", valor: "R$ 9.400", h: "20px", cor: "#FF5C7A" },
-        { label: "+90", valor: "R$ 3.800", h: "12px", cor: "#FF5C7A" }
-      ],
-      titulos: [
-        { id: "TIT-1204", cliente: "Aurora Confecções", pedido: "PED-2418", valor: "R$ 14.880", venc: "19/09", forma: "BOLETO", status: "A VENCER", st: "neutral" },
-        { id: "TIT-1201", cliente: "Atacado Nova Era", pedido: "PED-2409", valor: "R$ 15.700", venc: "19/09", forma: "BOLETO", status: "A VENCER", st: "neutral" },
-        { id: "TIT-1198", cliente: "Vitrine Kids", pedido: "PED-2415", valor: "R$ 4.480", venc: "05/09", forma: "BOLETO", status: "A VENCER", st: "neutral" },
-        { id: "TIT-1196", cliente: "Malharia Dinâmica", pedido: "PED-2402", valor: "R$ 12.180", venc: "26/08", forma: "BOLETO", status: "VENCE EM 2D", st: "warn" },
-        { id: "TIT-1192", cliente: "Studio Bianca", pedido: "PED-2404", valor: "R$ 2.240", venc: "24/08", forma: "CARTÃO", status: "HOJE", st: "warn" },
-        { id: "TIT-1188", cliente: "Rei do Jeans", pedido: "PED-2398", valor: "R$ 6.180", venc: "02/08", forma: "BOLETO", status: "ATRASO 22D", st: "bad" },
-        { id: "TIT-1181", cliente: "Confecção Litoral", pedido: "PED-2361", valor: "R$ 3.800", venc: "18/05", forma: "BOLETO", status: "ATRASO 98D", st: "bad" },
-        { id: "TIT-1177", cliente: "JS Modas", pedido: "PED-2377", valor: "R$ 7.020", venc: "14/08", forma: "PIX", status: "LIQUIDADO", st: "ok" },
-        { id: "TIT-1174", cliente: "Aurora Confecções", pedido: "PED-2355", valor: "R$ 9.400", venc: "10/08", forma: "BOLETO", status: "LIQUIDADO", st: "ok" }
-      ].map((t) => Object.assign({}, t, {
-      statusStyle: S[t.st],
-      waCor: t.st === "bad" ? "#FF9AAE" : t.st === "warn" ? "#FFC969" : "var(--fg-tertiary)",
-      wa: WA(FONES[t.cliente] || "5511900000000", t.st === "ok"
-        ? "Olá, aqui é da tecidOps no Brás. Confirmando o recebimento do título " + t.id + " de " + t.valor + ". Obrigado!"
-        : "Olá, aqui é da tecidOps no Brás. Sobre o título " + t.id + " de " + t.valor + " com vencimento em " + t.venc + ": consegue acertar via Pix? Mando a chave por aqui.")
-    })),
-      caderneta: [
-        { nome: "JS Modas", dias: "ABERTO HÁ 6 DIAS", valor: "R$ 4.180", cor: "#FFC969" },
-        { nome: "Costura da Néia", dias: "ABERTO HÁ 3 DIAS", valor: "R$ 1.240", cor: "var(--fg)" },
-        { nome: "Ateliê Sol", dias: "ABERTO HÁ 11 DIAS", valor: "R$ 1.680", cor: "#FFC969" },
-        { nome: "Marcos Uniformes", dias: "ABERTO HÁ 2 DIAS", valor: "R$ 860", cor: "var(--fg)" },
-        { nome: "Dona Rita", dias: "ABERTO HÁ 24 DIAS", valor: "R$ 460", cor: "#FF9AAE" }
-      ].map((c) => Object.assign({}, c, {
-        wa: WA(FONES[c.nome] || "5511900000000", "Olá, aqui é da tecidOps no Brás. Ficou " + c.valor + " na caderneta. Consegue passar hoje para acertar?")
-      })),
+      finHeaderTexto: s.aging ? ("Contas a receber · " + money0(s.aging.totalOpen) + " em " + s.aging.openTitlesCount + " títulos") : "Financeiro",
+      aging,
+      titulos,
+      caderneta,
+      cadernetaTotal,
 
-      fiscalKpis: [
-        { label: "AUTORIZADAS", valor: "118", nota: "R$ 486.320 EM AGOSTO" },
-        { label: "REJEITADAS", valor: "2", nota: "CORRIGIR NCM DO LINHO" },
-        { label: "CANCELADAS", valor: "3", nota: "DENTRO DO PRAZO" },
-        { label: "ICMS APURADO", valor: "R$ 41.870", nota: "SUBSTITUIÇÃO INCLUSA" }
-      ],
-      notas: [
-        { numero: "018442", cliente: "Malharia Dinâmica", data: "22/08", pedido: "PED-2417", cfop: "5102", valor: "R$ 11.240", icms: "R$ 1.011", status: "AUTORIZADA", st: "ok" },
-        { numero: "018441", cliente: "Atacado Nova Era", data: "20/08", pedido: "PED-2409", cfop: "5102", valor: "R$ 31.400", icms: "R$ 2.826", status: "AUTORIZADA", st: "ok" },
-        { numero: "018440", cliente: "Vitrine Kids", data: "21/08", pedido: "PED-2415", cfop: "5102", valor: "R$ 8.960", icms: "R$ 806", status: "AUTORIZADA", st: "ok" },
-        { numero: "018439", cliente: "Confecção Litoral", data: "20/08", pedido: "PED-2408", cfop: "6102", valor: "R$ 5.400", icms: "R$ 648", status: "REJEITADA · 610", st: "bad" },
-        { numero: "018438", cliente: "Studio Bianca", data: "19/08", pedido: "PED-2404", cfop: "5102", valor: "R$ 6.740", icms: "R$ 606", status: "AUTORIZADA", st: "ok" },
-        { numero: "018437", cliente: "Aurora Confecções", data: "19/08", pedido: "PED-2401", cfop: "5102", valor: "R$ 9.180", icms: "R$ 826", status: "AUTORIZADA", st: "ok" },
-        { numero: "018436", cliente: "Rei do Jeans", data: "18/08", pedido: "PED-2398", cfop: "5102", valor: "R$ 9.640", icms: "R$ 867", status: "CANCELADA", st: "neutral" },
-        { numero: "018435", cliente: "JS Modas", data: "14/08", pedido: "PED-2377", cfop: "5102", valor: "R$ 7.020", icms: "R$ 632", status: "AUTORIZADA", st: "ok" },
-        { numero: "018434", cliente: "Marcos Uniformes", data: "13/08", pedido: "PED-2370", cfop: "5102", valor: "R$ 3.120", icms: "R$ 281", status: "AUTORIZADA", st: "ok" }
-      ].map((n) => Object.assign({}, n, { statusStyle: S[n.st] })),
+      fiscalHeaderTexto: "NF-e · " + fiscalCounts.AUTHORIZED + " autorizadas, " + fiscalCounts.REJECTED + " rejeitadas",
+      fiscalKpis,
+      notas,
 
-      margens: [
-        { artigo: "Crepe Amanda", comp: "100% PES", custo: "R$ 11,40", venda: "R$ 21,50", margem: "46%", cor: "#7CEBC4", giro: "4,2×", cobertura: "38 dias" },
-        { artigo: "Tricoline Fio Tinto", comp: "100% ALG", custo: "R$ 14,20", venda: "R$ 26,40", margem: "44%", cor: "#7CEBC4", giro: "2,8×", cobertura: "62 dias" },
-        { artigo: "Sarja com Elastano", comp: "97% ALG 3% EL", custo: "R$ 19,60", venda: "R$ 32,90", margem: "40%", cor: "var(--fg)", giro: "2,1×", cobertura: "74 dias" },
-        { artigo: "Malha PV 30.1", comp: "67% PES 33% VIS", custo: "R$ 16,80", venda: "R$ 27,90", margem: "39%", cor: "var(--fg)", giro: "5,6×", cobertura: "26 dias" },
-        { artigo: "Suplex Fitness", comp: "90% PA 10% EL", custo: "R$ 23,10", venda: "R$ 38,00", margem: "38%", cor: "var(--fg)", giro: "3,4×", cobertura: "44 dias" },
-        { artigo: "Viscose Lisa", comp: "100% VIS", custo: "R$ 15,10", venda: "R$ 26,90", margem: "44%", cor: "#7CEBC4", giro: "1,6×", cobertura: "96 dias" },
-        { artigo: "Oxford Liso", comp: "100% PES", custo: "R$ 9,80", venda: "R$ 18,50", margem: "42%", cor: "var(--fg)", giro: "1,2×", cobertura: "118 dias" },
-        { artigo: "Linho Misto", comp: "55% LI 45% VIS", custo: "R$ 28,40", venda: "R$ 49,00", margem: "31%", cor: "#FF9AAE", giro: "0,7×", cobertura: "184 dias" }
-      ],
+      margens,
       relatorios: [
         { nome: "Curva ABC de artigos", periodo: "ÚLTIMOS 12 MESES" },
-        { nome: "Retalhos e perdas de corte", periodo: "AGOSTO 2026" },
-        { nome: "Comissão por vendedor", periodo: "AGOSTO 2026" },
-        { nome: "Custo landed por lote", periodo: "2026" },
+        { nome: "Retalhos e perdas de corte", periodo: "MÊS ATUAL" },
+        { nome: "Comissão por vendedor", periodo: "MÊS ATUAL" },
+        { nome: "Custo landed por lote", periodo: String(now.getFullYear()) },
         { nome: "Clientes inativos 90 dias", periodo: "POSIÇÃO DE HOJE" },
         { nome: "Posição de estoque por depósito", periodo: "POSIÇÃO DE HOJE" }
       ],
 
-      mobileFila: [
-        { id: "R-4413", artigo: "Malha PV Off White", status: "OK", st: "ok" },
-        { id: "R-4430", artigo: "Crepe Amanda Rosé", status: "OK", st: "ok" },
-        { id: "R-4356", artigo: "Linho Misto Cru", status: "DIVERGE", st: "bad" },
-        { id: "R-4421", artigo: "Suplex Marinho", status: "PENDENTE", st: "warn" }
-      ].map((m) => Object.assign({}, m, { style: S[m.st] })),
+      mobileFila,
       mobileNotas: [
         { tag: "LEITURA", titulo: "Etiqueta com QR por rolo", texto: "Cada rolo recebe etiqueta impressa na entrada do lote. O QR abre a ficha com saldo, lote e preço de venda." },
         { tag: "CORTE", titulo: "Baixa na hora do corte", texto: "O estoquista confirma a metragem cortada no celular. O saldo do rolo e o pedido no balcão são atualizados juntos." },
